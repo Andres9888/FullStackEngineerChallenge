@@ -1,6 +1,15 @@
 import NextAuth from "next-auth"
 import Providers from "next-auth/providers"
+import axios from 'axios';
 
+
+
+const fetchData = async () => {
+  const result = await axios(
+    'http://localhost:9000/',
+  );
+  return result.data[0]
+  }
 const isCorrectCredentials = credentials =>
   credentials.username === process.env.NEXTAUTH_USERNAME &&
   credentials.password === process.env.NEXTAUTH_PASSWORD
@@ -19,8 +28,12 @@ const options = {
         password: { label: "Password", type: "password" },
       },
       authorize: async credentials => {
+        fetchData()
         if (isCorrectCredentials(credentials)) {
-          const user = { id: 1, name: "Admin" }
+          //const user = { id: 1, name: "Admin" }
+          const user = fetchData()
+          
+         
           // Any object returned will be saved in `user` property of the JWT
           return Promise.resolve(user)
         } else {
