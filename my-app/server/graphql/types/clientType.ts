@@ -12,4 +12,12 @@ export const typeDefs = gql`
     users: [user!]!
   }
   
+  type CountResult {
+    acknowledged: Boolean
+  }
+
+  type Mutation {
+    addEmployee( name: String!): CountResult
+  }
+
 `
