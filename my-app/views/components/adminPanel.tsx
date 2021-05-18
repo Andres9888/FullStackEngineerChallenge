@@ -3,7 +3,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import { Table } from 'antd'
 import { Form, Input, Button, Popconfirm, Comment, Tooltip, Avatar } from 'antd'
-import moment from 'moment';
+import moment from 'moment'
 
 import 'antd/dist/antd.css'
 
@@ -11,6 +11,10 @@ const USERS = gql`
   query users {
     users {
       name
+      review{
+        author
+        review
+      }
     }
   }
 `
@@ -88,9 +92,7 @@ const AdminPanel = () => {
         }
       : null
 
-      const actions = [
-        <span key="comment-basic-reply-to">Reply to</span>,
-      ];
+  const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
 
   if (loading) {
     return <h1>Loading...</h1>
@@ -125,27 +127,20 @@ const AdminPanel = () => {
         expandable={{
           expandedRowRender: record => (
             <Comment
-      actions={actions}
-      author={<a>Han Solo</a>}
-      avatar={
-        <Avatar
-          src=""
-          alt="Han Solo"
-        />
-      }
-      content={
-        <p>
-          We supply a series of design principles, practical patterns and high quality design
-          resources (Sketch and Axure), to help people create their product prototypes beautifully
-          and efficiently.
-        </p>
-      }
-      datetime={
-        <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-          <span>{moment().fromNow()}</span>
-        </Tooltip>
-      }
-    />
+              actions={actions}
+              author={<a>{record.review[0].author}</a>}
+              avatar={<Avatar src='' alt='Han Solo' />}
+              content={
+                <p>
+                  {record.review[0].review}
+                </p>
+              }
+              datetime={
+                <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
+                  <span>{moment().fromNow()}</span>
+                </Tooltip>
+              }
+            />
           ),
           rowExpandable: record => record.name !== 'Not Expandable'
         }}

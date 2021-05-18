@@ -5,6 +5,12 @@ export const typeDefs = gql`
   type user {
     id: ID!
     name: String!
+    review: [review!]!
+  }
+
+  type review {
+    author: String!
+    review: String!
   }
 
   
