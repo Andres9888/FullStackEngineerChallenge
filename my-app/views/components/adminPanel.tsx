@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery} from '@apollo/react-hooks'
 import gql from 'graphql-tag'
-
+import { Table } from "antd";
 
 const USERS = gql`
 query users {
@@ -10,19 +10,32 @@ query users {
   }
 }
 `
+const columns = [
+  { title: 'Name', dataIndex: 'name', key: 'name' },
+  {
+    title: 'Action',
+    dataIndex: '',
+    key: 'x',
+    render: () => <a>Delete</a>,
+  },
+];
 
 const AdminPanel = () =>{ 
   const {
-    data,
+    data:{users},
     loading,
     error,
     refetch,
   } = useQuery(USERS)
-  
-  
 
   return(
- <h1>{console.log(data)}</h1>
-)
-  }
+<Table
+    columns={columns}
+    expandable={{
+      expandedRowRender: record => <p style={{ margin: 0 }}>{record.name}</p>,
+      rowExpandable: record => record.name !== 'Not Expandable',
+    }}
+    dataSource={users}
+  />
+  )}
 export default AdminPanel
