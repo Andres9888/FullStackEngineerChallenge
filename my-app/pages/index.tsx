@@ -5,20 +5,6 @@ import axios from "axios"
 
 export default function Page() {
   const [session, loading] = useSession()
-  const [data, setData] = useState({ hits: [] });
- 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        'http://localhost:9000/',
-      );
- 
-      setData(result.data);
-    };
- 
-    fetchData();
-  }, []);
- 
   if (loading) {
     return <p>Loading...</p>
   }
