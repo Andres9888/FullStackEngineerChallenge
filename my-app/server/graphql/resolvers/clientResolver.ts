@@ -18,6 +18,13 @@ export const resolvers = {
     ) => {
         return await db.users.insertOne( { name: name });
     },
+    removeEmployee: async (
+      _root: undefined,
+      { name  }: { name: string },
+      {db}
+    ) => {
+        return await db.users.deleteOne( { name: name });
+    },
   }
  
 }

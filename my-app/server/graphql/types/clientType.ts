@@ -18,6 +18,7 @@ export const typeDefs = gql`
 
   type Mutation {
     addEmployee( name: String!): CountResult
+    removeEmployee( name: String!): CountResult
   }
 
 `

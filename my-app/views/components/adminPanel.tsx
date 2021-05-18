@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import { Table } from 'antd'
-import { Form, Input, Button, Radio } from 'antd'
+import { Form, Input, Button, Radio, Popconfirm } from 'antd'
 import 'antd/dist/antd.css'
 
 const USERS = gql`
@@ -19,30 +19,37 @@ const INCREMENT_COUNT = gql`
       acknowledged
     }
   }`
+  const REMOVE_EMPLOYEE = gql`
+  mutation removeEmployee( $name: String!) {
+    removeEmployee(name: $name) {
+      acknowledged
+    }
+  }`
 
-const columns = [
-  { title: 'Employee', dataIndex: 'name', key: 'name' },
-  {
-    title: 'Action',
-    dataIndex: '',
-    key: 'x',
-    render: () => <a>Delete</a>
-  }
-]
+
 
 type LayoutType = Parameters<typeof Form>[0]['layout']
 
 const AdminPanel = () => {
   const { data, loading, error, refetch } = useQuery(USERS)
   const [incrementCount] = useMutation(INCREMENT_COUNT)
-
+  const [removeEmployee] = useMutation(REMOVE_EMPLOYEE)
   const [form] = Form.useForm()
   const [formLayout, setFormLayout] = useState<LayoutType>('horizontal')
-
-  const handleIncrementCount = async (name: string) => {
-    await incrementCount({ variables: { name } });
-    refetch();
-  };
+  
+  const columns = [
+    { title: 'Employee', dataIndex: 'name', key: 'name' },
+    {
+      title: 'Action',
+      dataIndex: 'name',
+      key: 'x',
+      render: (text, record) =>(
+              <Popconfirm title="Are you sure you want to remove this employee?" onConfirm={() => handleRemove(record.name)}>
+                <a>Delete</a>
+              </Popconfirm>
+            ) 
+    }
+  ]
 
   const handleSubmit = async (e) => {
     // grab form values
@@ -51,6 +58,11 @@ const AdminPanel = () => {
     await incrementCount({ variables: { name: form_vals.user.username } });
     refetch();
     
+  };
+
+  const handleRemove = async (name) => {
+    await removeEmployee({ variables: { name: name } });
+    refetch();
   };
 
   const onFormLayoutChange = ({ layout }: { layout: LayoutType }) => {
