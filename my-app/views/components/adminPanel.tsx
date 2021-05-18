@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import { Table } from 'antd'
-import { Form, Input, Button, Radio, Popconfirm } from 'antd'
+import { Form, Input, Button, Popconfirm, Comment, Tooltip, Avatar } from 'antd'
+import moment from 'moment';
+
 import 'antd/dist/antd.css'
 
 const USERS = gql`
@@ -14,19 +16,19 @@ const USERS = gql`
 `
 
 const INCREMENT_COUNT = gql`
-  mutation addEmployee( $name: String!) {
+  mutation addEmployee($name: String!) {
     addEmployee(name: $name) {
       acknowledged
     }
-  }`
-  const REMOVE_EMPLOYEE = gql`
-  mutation removeEmployee( $name: String!) {
+  }
+`
+const REMOVE_EMPLOYEE = gql`
+  mutation removeEmployee($name: String!) {
     removeEmployee(name: $name) {
       acknowledged
     }
-  }`
-
-
+  }
+`
 
 type LayoutType = Parameters<typeof Form>[0]['layout']
 
@@ -36,34 +38,36 @@ const AdminPanel = () => {
   const [removeEmployee] = useMutation(REMOVE_EMPLOYEE)
   const [form] = Form.useForm()
   const [formLayout, setFormLayout] = useState<LayoutType>('horizontal')
-  
+
   const columns = [
     { title: 'Employee', dataIndex: 'name', key: 'name' },
     {
       title: 'Action',
       dataIndex: 'name',
       key: 'x',
-      render: (text, record) =>(
-              <Popconfirm title="Are you sure you want to remove this employee?" onConfirm={() => handleRemove(record.name)}>
-                <a>Delete</a>
-              </Popconfirm>
-            ) 
+      render: (text, record) => (
+        <Popconfirm
+          title='Are you sure you want to remove this employee?'
+          onConfirm={() => handleRemove(record.name)}
+        >
+          <a>Delete</a>
+        </Popconfirm>
+      )
     }
   ]
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     // grab form values
-    let form_vals = form.getFieldsValue(['user', 'username']);
+    let form_vals = form.getFieldsValue(['user', 'username'])
     // perform the rest of submit logic here...
-    await incrementCount({ variables: { name: form_vals.user.username } });
-    refetch();
-    
-  };
+    await incrementCount({ variables: { name: form_vals.user.username } })
+    refetch()
+  }
 
-  const handleRemove = async (name) => {
-    await removeEmployee({ variables: { name: name } });
-    refetch();
-  };
+  const handleRemove = async name => {
+    await removeEmployee({ variables: { name: name } })
+    refetch()
+  }
 
   const onFormLayoutChange = ({ layout }: { layout: LayoutType }) => {
     setFormLayout(layout)
@@ -84,6 +88,10 @@ const AdminPanel = () => {
         }
       : null
 
+      const actions = [
+        <span key="comment-basic-reply-to">Reply to</span>,
+      ];
+
   if (loading) {
     return <h1>Loading...</h1>
   }
@@ -103,18 +111,41 @@ const AdminPanel = () => {
         initialValues={{ layout: formLayout }}
         onValuesChange={onFormLayoutChange}
       >
-        <Form.Item name={['user', 'username']}  label='Field A'>
+        <Form.Item name={['user', 'username']} label='Field A'>
           <Input placeholder='input placeholder' />
         </Form.Item>
         <Form.Item {...buttonItemLayout}>
-          <Button onClick={handleSubmit} type='primary'>Submit</Button>
+          <Button onClick={handleSubmit} type='primary'>
+            Submit
+          </Button>
         </Form.Item>
       </Form>
       <Table
         columns={columns}
         expandable={{
           expandedRowRender: record => (
-            <p style={{ margin: 0 }}>{record.name}</p>
+            <Comment
+      actions={actions}
+      author={<a>Han Solo</a>}
+      avatar={
+        <Avatar
+          src=""
+          alt="Han Solo"
+        />
+      }
+      content={
+        <p>
+          We supply a series of design principles, practical patterns and high quality design
+          resources (Sketch and Axure), to help people create their product prototypes beautifully
+          and efficiently.
+        </p>
+      }
+      datetime={
+        <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
+          <span>{moment().fromNow()}</span>
+        </Tooltip>
+      }
+    />
           ),
           rowExpandable: record => record.name !== 'Not Expandable'
         }}

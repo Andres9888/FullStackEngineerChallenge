@@ -21,6 +21,7 @@
     "graphql": "^15.5.0",
     "graphql-tag": "^2.12.4",
     "helmet": "^4.6.0",
+    "moment": "^2.29.1",
     "mongo": "^0.1.0",
     "mongodb": "^3.6.6",
     "morgan": "^1.10.0",
