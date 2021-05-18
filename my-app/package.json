@@ -5,24 +5,38 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "mon": "nodemon"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.18",
+    "@apollo/react-hooks": "^4.0.0",
+    "apollo-server-express": "^2.24.0",
+    "apollo-server-micro": "^2.24.0",
     "axios": "^0.21.1",
+    "compression": "^1.7.4",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "graphql": "^15.5.0",
+    "graphql-tag": "^2.12.4",
+    "helmet": "^4.6.0",
     "mongo": "^0.1.0",
     "mongodb": "^3.6.6",
+    "morgan": "^1.10.0",
     "next": "10.0.1",
     "next-auth": "^3.1.0",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-apollo-hooks": "^0.5.0",
+    "react-dom": "17.0.1",
+    "ts-node": "^9.1.1",
+    "tsconfig-paths": "^3.9.0"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
     "@types/node": "^15.3.0",
     "@types/react": "^17.0.5",
     "dotenv": "^9.0.2",
+    "nodemon": "^2.0.7",
     "typescript": "^4.2.4"
   }
 }
