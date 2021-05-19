@@ -1,30 +1,30 @@
 // @ts-nocheck
 import { ObjectId } from 'mongodb'
 
-
-
 export const resolvers = {
   // Query
   Query: {
-    users: async (_root: undefined, _args: {}, {db}) => {
+    users: async (_root: undefined, _args: {}, { db }) => {
       return await db.users.find({}).toArray()
     }
   },
   Mutation: {
     addEmployee: async (
       _root: undefined,
-      { name  }: { name: string },
-      {db}
+      { name, feedback },
+      { db }
     ) => {
-        return await db.users.insertOne( { name: name });
+      return await db.users.insert({
+        name: name,
+        review: [{ author: 'admin', review: feedback }]
+      })
     },
     removeEmployee: async (
       _root: undefined,
-      { name  }: { name: string },
-      {db}
+      { name }: { name: string },
+      { db }
     ) => {
-        return await db.users.deleteOne( { name: name });
-    },
+      return await db.users.deleteOne({ name: name })
+    }
   }
- 
 }

@@ -20,8 +20,8 @@ const USERS = gql`
 `
 
 const INCREMENT_COUNT = gql`
-  mutation addEmployee($name: String!) {
-    addEmployee(name: $name) {
+  mutation addEmployee($name: String!, $feedback: String! ) {
+    addEmployee(name: $name, feedback: $feedback) {
       acknowledged
     }
   }
@@ -63,8 +63,10 @@ const AdminPanel = () => {
   const handleSubmit = async e => {
     // grab form values
     let form_vals = form.getFieldsValue(['user', 'username'])
+    let form_vals2 = form.getFieldsValue(['review', 'review2'])
+    console.log(form_vals2.review.review2)
     // perform the rest of submit logic here...
-    await incrementCount({ variables: { name: form_vals.user.username } })
+    await incrementCount({ variables: { name: form_vals.user.username,feedback: form_vals2.review.review2 } })
     refetch()
   }
 
@@ -105,7 +107,7 @@ const AdminPanel = () => {
 
   return (
     <div>
-      <h1>add new employee</h1>
+      
       <Form
         {...formItemLayout}
         layout={formLayout}
@@ -113,7 +115,10 @@ const AdminPanel = () => {
         initialValues={{ layout: formLayout }}
         onValuesChange={onFormLayoutChange}
       >
-        <Form.Item name={['user', 'username']} label='Field A'>
+        <Form.Item name={['user', 'username']} label='Add Employee'>
+          <Input placeholder='input placeholder' />
+        </Form.Item>
+        <Form.Item name={['review', 'review2']} label='Add Review'>
           <Input placeholder='input placeholder' />
         </Form.Item>
         <Form.Item {...buttonItemLayout}>
@@ -126,21 +131,25 @@ const AdminPanel = () => {
         columns={columns}
         expandable={{
           expandedRowRender: record => (
-            <Comment
-              actions={actions}
-              author={<a>{record.review[0].author}</a>}
-              avatar={<Avatar src='' alt='Han Solo' />}
-              content={
-                <p>
-                  {record.review[0].review}
-                </p>
-              }
-              datetime={
-                <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-                  <span>{moment().fromNow()}</span>
-                </Tooltip>
-              }
-            />
+            
+            
+            record.review.map((element)=> <Comment
+            actions={actions}
+            author={<a>{element.author}</a>}
+            avatar={<Avatar src='' alt='Han Solo' />}
+            content={
+              <p>
+                {element.review}
+              </p>
+            }
+            datetime={
+              <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
+                <span>{moment().fromNow()}</span>
+              </Tooltip>
+            }
+          /> )
+            
+            
           ),
           rowExpandable: record => record.name !== 'Not Expandable'
         }}
