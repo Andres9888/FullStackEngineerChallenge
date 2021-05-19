@@ -16,7 +16,8 @@ export const resolvers = {
     ) => {
       return await db.users.insert({
         name: name,
-        review: [{ author: 'admin', review: feedback }]
+        review: [{ author: 'admin', review: feedback }],
+        employeesToReview:[]
       })
     },
     removeEmployee: async (
@@ -35,12 +36,8 @@ export const resolvers = {
     ) => {
       return await db.users.updateOne(
         { name: assignEmployee },
-        { $addToSet: { employeesToReview: employeeNameToReview} }
+        { $addToSet: { employeesToReview: employeeNameToReview } }
       )
     }
-    
-    
-  
-
   }
 }

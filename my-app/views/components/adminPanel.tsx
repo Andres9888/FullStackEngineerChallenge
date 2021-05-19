@@ -40,6 +40,14 @@ const INCREMENT_COUNT = gql`
     }
   }
 `
+const ASSIGN_EMPLOYEE = gql`
+  mutation assignEmployeeReview($assignEmployee: String!, $employeeNameToReview: String!) {
+    assignEmployeeReview(assignEmployee: $assignEmployee, employeeNameToReview: $employeeNameToReview) {
+      acknowledged
+    }
+  }
+`
+
 const REMOVE_EMPLOYEE = gql`
   mutation removeEmployee($name: String!) {
     removeEmployee(name: $name) {
@@ -53,6 +61,7 @@ type LayoutType = Parameters<typeof Form>[0]['layout']
 const AdminPanel = () => {
   const { data, loading, error, refetch } = useQuery(USERS)
   const [incrementCount] = useMutation(INCREMENT_COUNT)
+  const [assignEmployee] = useMutation(ASSIGN_EMPLOYEE)
   const [removeEmployee] = useMutation(REMOVE_EMPLOYEE)
   const [form] = Form.useForm()
   const [formLayout, setFormLayout] = useState<LayoutType>('horizontal')
@@ -62,11 +71,10 @@ const AdminPanel = () => {
       return <Spin />
     } else {
       return (
-        <Menu selectable onClick={handleMenuClick}>
+        <Menu>
           {data.users.map(element => (
             <Menu.Item 
-              
-              onClick={() => console.log(element.name,record.name)}
+              onClick={() => handleMenuClick(record.name,element.name)}
               key='1'
               icon={<UserOutlined />}
             >
@@ -132,9 +140,14 @@ const AdminPanel = () => {
     console.log('click right button', e)
   }
 
-  function handleMenuClick (e) {
-    message.info('Click on menu item.')
-    console.log('click', e)
+  const handleMenuClick = async (employee, assignedEmployee) =>{
+    console.log(employee, assignedEmployee)
+     return await assignEmployee({
+      variables: {
+        assignEmployee: employee,
+        employeeNameToReview: assignedEmployee
+     }
+    })
   }
 
   const formItemLayout =
