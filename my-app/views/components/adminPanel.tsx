@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
+import { USERS } from '~graphql/queries/queries'
+import { ADD_EMPLOYEE, ASSIGN_EMPLOYEE, REMOVE_EMPLOYEE } from '~graphql/mutations/mutations'
 import {
   Table,
   Form,
@@ -16,62 +17,28 @@ import {
   Space,
   Spin
 } from 'antd'
-import moment from 'moment'
 import { UserOutlined } from '@ant-design/icons'
-
 import 'antd/dist/antd.css'
+import AdminForm from '~views/components/adminForm'
 
-const USERS = gql`
-  query users {
-    users {
-      name
-      review {
-        author
-        review
-      }
-    }
-  }
-`
+import moment from 'moment'
 
-const INCREMENT_COUNT = gql`
-  mutation addEmployee($name: String!, $feedback: String!) {
-    addEmployee(name: $name, feedback: $feedback) {
-      acknowledged
-    }
-  }
-`
-const ASSIGN_EMPLOYEE = gql`
-  mutation assignEmployeeReview($assignEmployee: String!, $employeeNameToReview: String!) {
-    assignEmployeeReview(assignEmployee: $assignEmployee, employeeNameToReview: $employeeNameToReview) {
-      acknowledged
-    }
-  }
-`
 
-const REMOVE_EMPLOYEE = gql`
-  mutation removeEmployee($name: String!) {
-    removeEmployee(name: $name) {
-      acknowledged
-    }
-  }
-`
 
-type LayoutType = Parameters<typeof Form>[0]['layout']
 
 const AdminPanel = () => {
   const { data, loading, error, refetch } = useQuery(USERS)
-  const [incrementCount] = useMutation(INCREMENT_COUNT)
+  
   const [assignEmployee] = useMutation(ASSIGN_EMPLOYEE)
   const [removeEmployee] = useMutation(REMOVE_EMPLOYEE)
-  const [form] = Form.useForm()
-  const [formLayout, setFormLayout] = useState<LayoutType>('horizontal')
+  
 
   const menu = function(record){
     if (loading) {
       return <Spin />
     } else {
       return (
-        <Menu>
+        <Menu onClick={handleButtonClick}>
           {data.users.map(element => (
             <Menu.Item 
               onClick={() => handleMenuClick(record.name,element.name)}
@@ -111,29 +78,13 @@ const AdminPanel = () => {
     }
   ]
 
-  const handleSubmit = async e => {
-    // grab form values
-    let form_vals = form.getFieldsValue(['user', 'username'])
-    let form_vals2 = form.getFieldsValue(['review', 'review2'])
-    console.log(form_vals2.review.review2)
-    // perform the rest of submit logic here...
-    await incrementCount({
-      variables: {
-        name: form_vals.user.username,
-        feedback: form_vals2.review.review2
-      }
-    })
-    refetch()
-  }
+  
 
   const handleRemove = async name => {
     await removeEmployee({ variables: { name: name } })
     refetch()
   }
-
-  const onFormLayoutChange = ({ layout }: { layout: LayoutType }) => {
-    setFormLayout(layout)
-  }
+  
 
   function handleButtonClick (e) {
     message.info('Click on right button.')
@@ -150,20 +101,7 @@ const AdminPanel = () => {
     })
   }
 
-  const formItemLayout =
-    formLayout === 'horizontal'
-      ? {
-          labelCol: { span: 4 },
-          wrapperCol: { span: 14 }
-        }
-      : null
-
-  const buttonItemLayout =
-    formLayout === 'horizontal'
-      ? {
-          wrapperCol: { span: 14, offset: 4 }
-        }
-      : null
+  
 
   const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
 
@@ -178,33 +116,7 @@ const AdminPanel = () => {
 
   return (
     <div>
-      <Form
-        {...formItemLayout}
-        layout={formLayout}
-        form={form}
-        initialValues={{ layout: formLayout }}
-        onValuesChange={onFormLayoutChange}
-      >
-        <Form.Item
-          name={['user', 'username']}
-          rules={[{ required: true, message: 'Please input employee name!' }]}
-          label='Add Employee'
-        >
-          <Input placeholder='input placeholder' />
-        </Form.Item>
-        <Form.Item
-          name={['review', 'review2']}
-          rules={[{ required: true, message: 'Please input your review!' }]}
-          label='Add Review'
-        >
-          <Input placeholder='input placeholder' />
-        </Form.Item>
-        <Form.Item {...buttonItemLayout}>
-          <Button onClick={handleSubmit} type='primary'>
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
+      <AdminForm refetch={refetch}/>
       <Table
         columns={columns}
         expandable={{

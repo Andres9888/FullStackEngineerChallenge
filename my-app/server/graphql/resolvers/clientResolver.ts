@@ -9,15 +9,11 @@ export const resolvers = {
     }
   },
   Mutation: {
-    addEmployee: async (
-      _root: undefined,
-      { name, feedback },
-      { db }
-    ) => {
+    addEmployee: async (_root: undefined, { name, feedback }, { db }) => {
       return await db.users.insert({
         name: name,
         review: [{ author: 'admin', review: feedback }],
-        employeesToReview:[]
+        employeesToReview: []
       })
     },
     removeEmployee: async (
@@ -27,7 +23,6 @@ export const resolvers = {
     ) => {
       return await db.users.deleteOne({ name: name })
     },
-    
 
     assignEmployeeReview: async (
       _root: undefined,

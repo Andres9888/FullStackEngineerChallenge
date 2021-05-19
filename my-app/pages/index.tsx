@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
+import React from 'react'
 import { signIn, signOut, useSession } from 'next-auth/client'
 import AdminPanel from '~views/components/adminPanel'
 import EmployeePanel from '~views/components/EmployeePanel'
