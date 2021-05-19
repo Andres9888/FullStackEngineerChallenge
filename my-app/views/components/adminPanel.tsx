@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
-import { Table } from 'antd'
 import {
+  Table,
   Form,
   Input,
   Button,
@@ -17,7 +17,7 @@ import {
   Spin
 } from 'antd'
 import moment from 'moment'
-import { DownOutlined, UserOutlined } from '@ant-design/icons'
+import { UserOutlined } from '@ant-design/icons'
 
 import 'antd/dist/antd.css'
 
@@ -62,7 +62,7 @@ const AdminPanel = () => {
   ) : (
     <Menu onClick={handleMenuClick}>
       {data.users.map(element => (
-        <Menu.Item key='1' icon={<UserOutlined />}>
+        <Menu.Item onClick={() => console.log(element.name)}key='1' icon={<UserOutlined />}>
           {element.name}
         </Menu.Item>
       ))}
@@ -76,22 +76,21 @@ const AdminPanel = () => {
       dataIndex: 'name',
       key: 'x',
       render: (text, record) => (
-        
-          <Space wrap>
-        <Dropdown.Button
-          overlay={menu}
-          placement='bottomCenter'
-          icon={<UserOutlined />}
-        >
-          Assign Review To
-        </Dropdown.Button>
-        <Popconfirm
-          title='Are you sure you want to remove this employee?'
-          onConfirm={() => handleRemove(record.name)}
-        >
-          <a>Delete</a>
-        </Popconfirm>
-      </Space>
+        <Space wrap>
+          <Dropdown.Button
+            overlay={menu}
+            placement='bottomCenter'
+            icon={<UserOutlined />}
+          >
+            Assign Review To
+          </Dropdown.Button>
+          <Popconfirm
+            title='Are you sure you want to remove this employee?'
+            onConfirm={() => handleRemove(record.name)}
+          >
+            <a>Delete</a>
+          </Popconfirm>
+        </Space>
       )
     }
   ]
@@ -206,7 +205,6 @@ const AdminPanel = () => {
         }}
         dataSource={data.users}
       />
-      
     </div>
   )
 }
