@@ -9,6 +9,7 @@
     "mon": "nodemon"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.6.2",
     "@apollo/client": "^3.3.18",
     "@apollo/react-hooks": "^4.0.0",
     "antd": "^4.15.6",
