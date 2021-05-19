@@ -24,13 +24,8 @@ export default function Page () {
         </>
       )}
 
-      {session && session.user.name === "admin" &&(<AdminPanel /> )}
-
-      <div>
-        <Link href='/private'>
-          <a>Go to private page</a>
-        </Link>
-      </div>
+      {session && session.user.name === "admin" && (<AdminPanel /> )}
+      {session && session.user.name !== "admin" && (<EmployeePanel /> )}
     </>
   )
 }

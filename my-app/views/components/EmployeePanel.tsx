@@ -40,31 +40,12 @@ const INCREMENT_COUNT = gql`
     }
   }
 `
-const ASSIGN_EMPLOYEE = gql`
-  mutation assignEmployeeReview($assignEmployee: String!, $employeeNameToReview: String!) {
-    assignEmployeeReview(assignEmployee: $assignEmployee, employeeNameToReview: $employeeNameToReview) {
-      acknowledged
-    }
-  }
-`
 
-const REMOVE_EMPLOYEE = gql`
-  mutation removeEmployee($name: String!) {
-    removeEmployee(name: $name) {
-      acknowledged
-    }
-  }
-`
 
-type LayoutType = Parameters<typeof Form>[0]['layout']
-
-const AdminPanel = () => {
+const EmployeePanel = () => {
   const { data, loading, error, refetch } = useQuery(USERS)
   const [incrementCount] = useMutation(INCREMENT_COUNT)
-  const [assignEmployee] = useMutation(ASSIGN_EMPLOYEE)
-  const [removeEmployee] = useMutation(REMOVE_EMPLOYEE)
-  const [form] = Form.useForm()
-  const [formLayout, setFormLayout] = useState<LayoutType>('horizontal')
+  
 
   const menu = function(record){
     if (loading) {
@@ -102,7 +83,7 @@ const AdminPanel = () => {
           </Dropdown.Button>
           <Popconfirm
             title='Are you sure you want to remove this employee?'
-            onConfirm={() => handleRemove(record.name)}
+            //onConfirm={() => handleRemove(record.name)}
           >
             <a>Delete</a>
           </Popconfirm>
@@ -126,44 +107,9 @@ const AdminPanel = () => {
     refetch()
   }
 
-  const handleRemove = async name => {
-    await removeEmployee({ variables: { name: name } })
-    refetch()
-  }
-
-  const onFormLayoutChange = ({ layout }: { layout: LayoutType }) => {
-    setFormLayout(layout)
-  }
-
-  function handleButtonClick (e) {
-    message.info('Click on right button.')
-    console.log('click right button', e)
-  }
-
-  const handleMenuClick = async (employee, assignedEmployee) =>{
-    console.log(employee, assignedEmployee)
-     return await assignEmployee({
-      variables: {
-        assignEmployee: employee,
-        employeeNameToReview: assignedEmployee
-     }
-    })
-  }
-
-  const formItemLayout =
-    formLayout === 'horizontal'
-      ? {
-          labelCol: { span: 4 },
-          wrapperCol: { span: 14 }
-        }
-      : null
-
-  const buttonItemLayout =
-    formLayout === 'horizontal'
-      ? {
-          wrapperCol: { span: 14, offset: 4 }
-        }
-      : null
+  
+  
+  
 
   const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
 
@@ -178,33 +124,6 @@ const AdminPanel = () => {
 
   return (
     <div>
-      <Form
-        {...formItemLayout}
-        layout={formLayout}
-        form={form}
-        initialValues={{ layout: formLayout }}
-        onValuesChange={onFormLayoutChange}
-      >
-        <Form.Item
-          name={['user', 'username']}
-          rules={[{ required: true, message: 'Please input employee name!' }]}
-          label='Add Employee'
-        >
-          <Input placeholder='input placeholder' />
-        </Form.Item>
-        <Form.Item
-          name={['review', 'review2']}
-          rules={[{ required: true, message: 'Please input your review!' }]}
-          label='Add Review'
-        >
-          <Input placeholder='input placeholder' />
-        </Form.Item>
-        <Form.Item {...buttonItemLayout}>
-          <Button onClick={handleSubmit} type='primary'>
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
       <Table
         columns={columns}
         expandable={{
@@ -229,4 +148,4 @@ const AdminPanel = () => {
     </div>
   )
 }
-export default AdminPanel
+export default EmployeePanel
