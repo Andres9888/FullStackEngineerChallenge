@@ -57,18 +57,26 @@ const AdminPanel = () => {
   const [form] = Form.useForm()
   const [formLayout, setFormLayout] = useState<LayoutType>('horizontal')
 
-  const menu = loading ? (
-    <Spin />
-  ) : (
-    <Menu onClick={handleMenuClick}>
-      {data.users.map(element => (
-        <Menu.Item onClick={() => console.log(element.name)}key='1' icon={<UserOutlined />}>
-          {element.name}
-        </Menu.Item>
-      ))}
-    </Menu>
-  )
-
+  const menu = function(record){
+    if (loading) {
+      return <Spin />
+    } else {
+      return (
+        <Menu selectable onClick={handleMenuClick}>
+          {data.users.map(element => (
+            <Menu.Item 
+              
+              onClick={() => console.log(element.name,record.name)}
+              key='1'
+              icon={<UserOutlined />}
+            >
+              {element.name}
+            </Menu.Item>
+          ))}
+        </Menu>
+      )
+    }
+  }
   const columns = [
     { title: 'Employee', dataIndex: 'name', key: 'name' },
     {
@@ -78,7 +86,7 @@ const AdminPanel = () => {
       render: (text, record) => (
         <Space wrap>
           <Dropdown.Button
-            overlay={menu}
+            overlay={menu(record)}
             placement='bottomCenter'
             icon={<UserOutlined />}
           >
@@ -120,8 +128,8 @@ const AdminPanel = () => {
   }
 
   function handleButtonClick (e) {
-    message.info('Click on left button.')
-    console.log('click left button', e)
+    message.info('Click on right button.')
+    console.log('click right button', e)
   }
 
   function handleMenuClick (e) {
