@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
-import styles from './nav.module.scss'
 import { Layout, Avatar, Affix, Input, Button, Icon, Menu } from 'antd'
+import { signIn, signOut, useSession } from 'next-auth/client'
 
 
 
@@ -9,16 +9,17 @@ const { Header } = Layout
 
 const { Item, SubMenu } = Menu
 
-const NavBlank = ({ viewer }) =>{
+const NavBlank = ({  }) =>{
+  const [session, loading] = useSession()
   const subMenuLogin =
-    viewer.id && viewer.avatar ? (
-      <SubMenu title={<Avatar src={viewer.avatar} />}>
+    session && session.user.name ? (
+      <SubMenu title={<Avatar />}>
+        {session.user.name}
+        <Button onClick={signOut} type="primary">Sign Out</Button>
       </SubMenu>
     ) : (
       <Item key="/login">
-      <Link href="/login">
-          <Button type="primary">Sign In</Button>
-        </Link>
+          <Button onClick={signIn} type="primary">Sign In</Button>
       </Item>
     );
   
@@ -44,3 +45,4 @@ const NavBlank = ({ viewer }) =>{
 
 
 export default NavBlank
+

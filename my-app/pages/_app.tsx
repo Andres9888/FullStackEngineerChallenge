@@ -1,6 +1,7 @@
 import { Provider } from "next-auth/client"
 import { ApolloProvider } from '@apollo/react-hooks'
 import { ApolloClient, InMemoryCache } from "@apollo/client";
+import '~styles/globals.css'
 
 const apollo = new ApolloClient({
     uri: "http://localhost:3000/api/graphql",
