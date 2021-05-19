@@ -25,6 +25,22 @@ export const resolvers = {
       { db }
     ) => {
       return await db.users.deleteOne({ name: name })
+    },
+    
+
+    assignEmployeeReview: async (
+      _root: undefined,
+      { assignEmployee, employeeNameToReview },
+      { db }
+    ) => {
+      return await db.users.updateOne(
+        { name: assignEmployee },
+        { $addToSet: { employeesToReview: employeeNameToReview} }
+      )
     }
+    
+    
+  
+
   }
 }
