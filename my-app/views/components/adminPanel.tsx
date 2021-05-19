@@ -115,11 +115,11 @@ const AdminPanel = () => {
         initialValues={{ layout: formLayout }}
         onValuesChange={onFormLayoutChange}
       >
-        <Form.Item name={['user', 'username']} label='Add Employee'>
-          <Input placeholder='input placeholder' />
+        <Form.Item name={['user', 'username']} rules={[{ required: true, message: 'Please input employee name!' }]} label='Add Employee'>
+          <Input  placeholder='input placeholder' />
         </Form.Item>
-        <Form.Item name={['review', 'review2']} label='Add Review'>
-          <Input placeholder='input placeholder' />
+        <Form.Item name={['review', 'review2']} rules={[{ required: true, message: 'Please input your review!' }]} label='Add Review'>
+          <Input  placeholder='input placeholder' />
         </Form.Item>
         <Form.Item {...buttonItemLayout}>
           <Button onClick={handleSubmit} type='primary'>
