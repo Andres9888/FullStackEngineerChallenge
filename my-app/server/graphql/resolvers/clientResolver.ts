@@ -25,11 +25,32 @@ export const resolvers = {
       return await db.users.find({}).toArray()
     },
     getAssignedEmployees: async (_root: undefined, _args: {}, { db }) => {
-      return await db.users.find({
-        name: {
-          $in: ['test', 'test3']
+      return await db.users.aggregate([
+        {
+          $match: {
+            name: 'test'
+          }
+        },
+        {
+          $unwind: {
+            path: '$employeesToReview'
+          }
+        },
+        {
+          $lookup: {
+            from: 'paypay-codetest-collection',
+            localField: 'employeesToReview',
+            foreignField: 'name',
+            as: 'employeesProfile'
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            review: 0
+          }
         }
-      })
+      ])
     }
   },
   Mutation: {

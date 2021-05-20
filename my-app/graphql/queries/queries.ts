@@ -8,6 +8,7 @@ export const USERS = gql`
         author
         review
       }
+      employeesToReview
     }
   }
 `

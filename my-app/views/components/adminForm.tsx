@@ -3,24 +3,12 @@ import { useMutation } from '@apollo/react-hooks'
 
 import { ADD_EMPLOYEE } from '~graphql/mutations/mutations'
 import {
-  Table,
   Form,
   Input,
   Button,
-  Popconfirm,
-  Comment,
-  Tooltip,
-  Avatar,
-  Menu,
-  Dropdown,
-  message,
-  Space,
-  Spin
 } from 'antd'
-import { UserOutlined } from '@ant-design/icons'
 import 'antd/dist/antd.css'
 
-import moment from 'moment'
 
 
 type LayoutType = Parameters<typeof Form>[0]['layout']

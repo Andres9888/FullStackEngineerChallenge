@@ -16,13 +16,13 @@ import {
 } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import 'antd/dist/antd.css'
-import AdminForm from '~views/components/adminForm'
+import AdminForm from '~views/components/AdminForm'
 
 import moment from 'moment'
 
 const AdminPanel = () => {
   const { data, loading, error, refetch } = useQuery(USERS)
-
+  console.log(data)
   const [assignEmployee] = useMutation(ASSIGN_EMPLOYEE)
   const [removeEmployee] = useMutation(REMOVE_EMPLOYEE)
 

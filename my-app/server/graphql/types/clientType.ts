@@ -6,6 +6,7 @@ export const typeDefs = gql`
     id: ID!
     name: String!
     review: [review!]!
+    employeesToReview:[String]
   }
 
   type review {
@@ -16,6 +17,7 @@ export const typeDefs = gql`
   
   type Query {
     users: [user!]!
+    getAssignedEmployees: [user!]!
   }
   
   type CountResult {
@@ -26,6 +28,7 @@ export const typeDefs = gql`
     assignEmployeeReview( assignEmployee: String!, employeeNameToReview: String!): CountResult
     addEmployee( name: String!, feedback: String!): CountResult
     removeEmployee( name: String! ): CountResult
+    
   }
 
 `
