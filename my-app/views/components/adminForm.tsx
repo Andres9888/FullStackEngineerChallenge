@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { useQuery, useMutation } from '@apollo/react-hooks'
-import { USERS } from '~graphql/queries/queries'
-import { ADD_EMPLOYEE, ASSIGN_EMPLOYEE, REMOVE_EMPLOYEE } from '~graphql/mutations/mutations'
+import { useMutation } from '@apollo/react-hooks'
+
+import { ADD_EMPLOYEE } from '~graphql/mutations/mutations'
 import {
   Table,
   Form,

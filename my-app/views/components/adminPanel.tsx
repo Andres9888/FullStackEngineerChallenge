@@ -1,12 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { USERS } from '~graphql/queries/queries'
-import { ADD_EMPLOYEE, ASSIGN_EMPLOYEE, REMOVE_EMPLOYEE } from '~graphql/mutations/mutations'
+import { ASSIGN_EMPLOYEE, REMOVE_EMPLOYEE } from '~graphql/mutations/mutations'
 import {
   Table,
-  Form,
-  Input,
-  Button,
   Popconfirm,
   Comment,
   Tooltip,
@@ -23,25 +20,21 @@ import AdminForm from '~views/components/adminForm'
 
 import moment from 'moment'
 
-
-
-
 const AdminPanel = () => {
   const { data, loading, error, refetch } = useQuery(USERS)
-  
+
   const [assignEmployee] = useMutation(ASSIGN_EMPLOYEE)
   const [removeEmployee] = useMutation(REMOVE_EMPLOYEE)
-  
 
-  const menu = function(record){
+  const menu = function (record) {
     if (loading) {
       return <Spin />
     } else {
       return (
         <Menu onClick={handleButtonClick}>
           {data.users.map(element => (
-            <Menu.Item 
-              onClick={() => handleMenuClick(record.name,element.name)}
+            <Menu.Item
+              onClick={() => handleMenuClick(record.name, element.name)}
               key='1'
               icon={<UserOutlined />}
             >
@@ -77,33 +70,28 @@ const AdminPanel = () => {
       )
     }
   ]
-
   
+  const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
 
   const handleRemove = async name => {
     await removeEmployee({ variables: { name: name } })
     refetch()
   }
-  
 
   function handleButtonClick (e) {
     message.info('Click on right button.')
-    console.log('click right button', e)
   }
 
-  const handleMenuClick = async (employee, assignedEmployee) =>{
-    console.log(employee, assignedEmployee)
-     return await assignEmployee({
+  const handleMenuClick = async (employee, assignedEmployee) => {
+    return await assignEmployee({
       variables: {
         assignEmployee: employee,
         employeeNameToReview: assignedEmployee
-     }
+      }
     })
   }
 
   
-
-  const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
 
   if (loading) {
     return <h1>Loading...</h1>
@@ -116,7 +104,7 @@ const AdminPanel = () => {
 
   return (
     <div>
-      <AdminForm refetch={refetch}/>
+      <AdminForm refetch={refetch} />
       <Table
         columns={columns}
         expandable={{
@@ -125,7 +113,7 @@ const AdminPanel = () => {
               <Comment
                 actions={actions}
                 author={<a>{element.author}</a>}
-                avatar={<Avatar src='' alt='Han Solo' />}
+                avatar={<Avatar src='' alt='' />}
                 content={<p>{element.review}</p>}
                 datetime={
                   <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>

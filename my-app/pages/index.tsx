@@ -12,9 +12,7 @@ export default function Page () {
 
   return (
     <>
-
-
-{!session && (
+      {!session && (
         <>
           Not signed in <br />
           <button onClick={signIn}>Sign in</button>
@@ -26,9 +24,9 @@ export default function Page () {
           <button onClick={signOut}>Sign out</button>
         </>
       )}
-<NavBlank />
-      {session && session.user.name === "admin" && (<AdminPanel /> )}
-      {session && session.user.name !== "admin" && (<EmployeePanel /> )}
+      <NavBlank />
+      {session && session.user.name === 'admin' && <AdminPanel />}
+      {session && session.user.name !== 'admin' && <EmployeePanel />}
     </>
   )
 }
