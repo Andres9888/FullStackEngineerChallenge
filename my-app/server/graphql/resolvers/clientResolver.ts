@@ -1,15 +1,43 @@
 // @ts-nocheck
-import { ObjectId } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
+
+type review = {
+  author: string
+  review: string
+}
+interface User {
+  _id: ObjectId
+  name: string
+  review: review[]
+}
+
+interface Database {
+  users: Collection<User>
+}
 
 export const resolvers = {
-  // Query
   Query: {
-    users: async (_root: undefined, _args: {}, { db }) => {
+    users: async (
+      _root: undefined,
+      _args: {},
+      { db }: { db: Database }
+    ): Promise<User> => {
       return await db.users.find({}).toArray()
+    },
+    getAssignedEmployees: async (_root: undefined, _args: {}, { db }) => {
+      return await db.users.find({
+        name: {
+          $in: ['test', 'test3']
+        }
+      })
     }
   },
   Mutation: {
-    addEmployee: async (_root: undefined, { name, feedback }, { db }) => {
+    addEmployee: async (
+      _root: undefined,
+      { name, feedback }: { name: string; feedback: string },
+      { db }: { db: Database }
+    ) => {
       return await db.users.insert({
         name: name,
         review: [{ author: 'admin', review: feedback }],
@@ -19,7 +47,7 @@ export const resolvers = {
     removeEmployee: async (
       _root: undefined,
       { name }: { name: string },
-      { db }
+      { db }: { db: Database }
     ) => {
       return await db.users.deleteOne({ name: name })
     },
@@ -27,7 +55,7 @@ export const resolvers = {
     assignEmployeeReview: async (
       _root: undefined,
       { assignEmployee, employeeNameToReview },
-      { db }
+      { db }: { db: Database }
     ) => {
       return await db.users.updateOne(
         { name: assignEmployee },
