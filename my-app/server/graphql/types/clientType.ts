@@ -6,7 +6,10 @@ export const typeDefs = gql`
     id: ID!
     name: String!
     review: [review!]!
-    employeesToReview:[String]
+  }
+  
+  type employeesProfile {
+    profileReview:[user]
   }
 
   type review {
@@ -17,7 +20,7 @@ export const typeDefs = gql`
   
   type Query {
     users: [user!]!
-    getAssignedEmployees: [user!]!
+    getAssignedEmployees: [employeesProfile]
   }
   
   type CountResult {

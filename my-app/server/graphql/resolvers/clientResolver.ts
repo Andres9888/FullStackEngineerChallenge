@@ -27,30 +27,54 @@ export const resolvers = {
     getAssignedEmployees: async (_root: undefined, _args: {}, { db }) => {
       return await db.users.aggregate([
         {
-          $match: {
-            name: 'test'
+          '$match': {
+            'name': 'test'
           }
-        },
-        {
-          $unwind: {
-            path: '$employeesToReview'
+        }, {
+          '$unwind': {
+            'path': '$employeesToReview'
           }
-        },
-        {
-          $lookup: {
-            from: 'paypay-codetest-collection',
-            localField: 'employeesToReview',
-            foreignField: 'name',
-            as: 'employeesProfile'
+        }, {
+          '$lookup': {
+            'from': 'paypay-codetest-collection', 
+            'localField': 'employeesToReview', 
+            'foreignField': 'name', 
+            'as': 'employeesProfile'
           }
-        },
-        {
-          $project: {
-            _id: 0,
-            review: 0
+        }, {
+          '$project': {
+            'name': 0, 
+            'employeesToReview': 0, 
+            '_id': 0, 
+            'review': 0, 
+            'employeesProfile': {
+              'employeesToReview': 0
+            }
+          }
+        }, {
+          '$group': {
+            '_id': '$id', 
+            'profileReview': {
+              '$addToSet': '$employeesProfile'
+            }
+          }
+        }, {
+          '$project': {
+            '_id': 0, 
+            'profileReview': {
+              '$reduce': {
+                'input': '$profileReview', 
+                'initialValue': [], 
+                'in': {
+                  '$concatArrays': [
+                    '$$value', '$$this'
+                  ]
+                }
+              }
+            }
           }
         }
-      ])
+      ]).toArray()
     }
   },
   Mutation: {
