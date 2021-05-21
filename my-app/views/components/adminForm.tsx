@@ -2,46 +2,35 @@ import React, { useState } from 'react'
 import { useMutation } from '@apollo/react-hooks'
 
 import { ADD_EMPLOYEE } from '~graphql/mutations/mutations'
-import {
-  Form,
-  Input,
-  Button,
-} from 'antd'
+import { Form, Input, Button } from 'antd'
 import 'antd/dist/antd.css'
-
-
 
 type LayoutType = Parameters<typeof Form>[0]['layout']
 
-const AdminForm = ({refetch}) => {
+const AdminForm = ({ refetch }) => {
   const [incrementCount] = useMutation(ADD_EMPLOYEE)
-  
 
   const [form] = Form.useForm()
   const [formLayout, setFormLayout] = useState<LayoutType>('horizontal')
 
-  
   const handleSubmit = async e => {
-    // grab form values
-    let form_vals = form.getFieldsValue(['user', 'username'])
-    let form_vals2 = form.getFieldsValue(['review', 'review2'])
-    console.log(form_vals2.review.review2)
-    // perform the rest of submit logic here...
+    
+    let formUserNameInput = form.getFieldsValue(['user', 'username'])
+    let formReviewInput = form.getFieldsValue(['userReview', 'review'])
+   
+    
     await incrementCount({
       variables: {
-        name: form_vals.user.username,
-        feedback: form_vals2.review.review2
+        name: formUserNameInput.user.username,
+        feedback: formReviewInput.userReview.review
       }
     })
     refetch()
   }
 
- 
   const onFormLayoutChange = ({ layout }: { layout: LayoutType }) => {
     setFormLayout(layout)
   }
-
-  
 
   const formItemLayout =
     formLayout === 'horizontal'
@@ -57,11 +46,8 @@ const AdminForm = ({refetch}) => {
           wrapperCol: { span: 14, offset: 4 }
         }
       : null
-  
 
-  
   return (
-    <div>
       <Form
         {...formItemLayout}
         layout={formLayout}
@@ -77,7 +63,7 @@ const AdminForm = ({refetch}) => {
           <Input placeholder='input placeholder' />
         </Form.Item>
         <Form.Item
-          name={['review', 'review2']}
+          name={['userReview', 'review']}
           rules={[{ required: true, message: 'Please input your review!' }]}
           label='Add Review'
         >
@@ -89,7 +75,7 @@ const AdminForm = ({refetch}) => {
           </Button>
         </Form.Item>
       </Form>
-    </div>
+    
   )
 }
 export default AdminForm
