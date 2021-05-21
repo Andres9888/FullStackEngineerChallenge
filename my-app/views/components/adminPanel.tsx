@@ -79,8 +79,12 @@ const AdminPanel = () => {
   const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
 
   const handleRemove = async name => {
+    
+    if(name === "admin"){
+      alert('Can not delete an admin')
+    }else{
     await removeEmployee({ variables: { name: name } })
-    refetch()
+    refetch()}
   }
 
   function handleButtonClick (e) {
