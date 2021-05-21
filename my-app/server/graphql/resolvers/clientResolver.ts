@@ -24,57 +24,66 @@ export const resolvers = {
     ): Promise<User> => {
       return await db.users.find({}).toArray()
     },
-    getAssignedEmployees: async (_root: undefined, _args: {}, { db }) => {
-      return await db.users.aggregate([
-        {
-          '$match': {
-            'name': 'test'
-          }
-        }, {
-          '$unwind': {
-            'path': '$employeesToReview'
-          }
-        }, {
-          '$lookup': {
-            'from': 'paypay-codetest-collection', 
-            'localField': 'employeesToReview', 
-            'foreignField': 'name', 
-            'as': 'employeesProfile'
-          }
-        }, {
-          '$project': {
-            'name': 0, 
-            'employeesToReview': 0, 
-            '_id': 0, 
-            'review': 0, 
-            'employeesProfile': {
-              'employeesToReview': 0
+    getAssignedEmployees: async (
+      _root: undefined,
+      { name }: { name: string },
+      { db }
+    ) => {
+      return await db.users
+        .aggregate([
+          {
+            $match: {
+              name: name
             }
-          }
-        }, {
-          '$group': {
-            '_id': '$id', 
-            'profileReview': {
-              '$addToSet': '$employeesProfile'
+          },
+          {
+            $unwind: {
+              path: '$employeesToReview'
             }
-          }
-        }, {
-          '$project': {
-            '_id': 0, 
-            'profileReview': {
-              '$reduce': {
-                'input': '$profileReview', 
-                'initialValue': [], 
-                'in': {
-                  '$concatArrays': [
-                    '$$value', '$$this'
-                  ]
+          },
+          {
+            $lookup: {
+              from: 'paypay-codetest-collection',
+              localField: 'employeesToReview',
+              foreignField: 'name',
+              as: 'employeesProfile'
+            }
+          },
+          {
+            $project: {
+              name: 0,
+              employeesToReview: 0,
+              _id: 0,
+              review: 0,
+              employeesProfile: {
+                employeesToReview: 0
+              }
+            }
+          },
+          {
+            $group: {
+              _id: '$id',
+              profileReview: {
+                $addToSet: '$employeesProfile'
+              }
+            }
+          },
+          {
+            $project: {
+              _id: 0,
+              profileReview: {
+                $reduce: {
+                  input: '$profileReview',
+                  initialValue: [],
+                  in: {
+                    $concatArrays: ['$$value', '$$this']
+                  }
                 }
               }
             }
           }
-        }
-      ]).toArray()
+        ])
+        .toArray()
     }
   },
   Mutation: {

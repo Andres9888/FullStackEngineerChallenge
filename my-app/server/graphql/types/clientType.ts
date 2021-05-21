@@ -20,7 +20,7 @@ export const typeDefs = gql`
   
   type Query {
     users: [user!]!
-    getAssignedEmployees: [employeesProfile]
+    getAssignedEmployees(name: String!): [employeesProfile]
   }
   
   type CountResult {

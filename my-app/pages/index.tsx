@@ -1,6 +1,6 @@
 import React from 'react'
 import { signIn, signOut, useSession } from 'next-auth/client'
-import AdminPanel from '~views/components/adminPanel'
+import AdminPanel from '~views/components/AdminPanel'
 import EmployeePanel from '~views/components/EmployeePanel'
 import NavBlank from '~views/components/NavBlank'
 
