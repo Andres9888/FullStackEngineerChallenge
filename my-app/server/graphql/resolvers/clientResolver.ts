@@ -23,6 +23,13 @@ export const resolvers = {
     ): Promise<User> => {
       return await db.users.find({}).toArray()
     },
+    // getCurrentuser: async (
+    //   _root: undefined,
+    //    {name: currentUser}:{name:string},
+    //   { db }: { db: Database }
+    // ): Promise<User> => {
+    //   return await db.users.find({ name: currentUser }).toArray()
+    // },
     getAssignedEmployees: async (
       _root: undefined,
       { name }: { name: string },
@@ -98,6 +105,16 @@ export const resolvers = {
         employeesToReview: []
       })
     },
+    // giveFeedback: async (
+    //   _root: undefined,
+    //   { reviewEmployee, feedback, reviewer  },
+    //   { db }: { db: Database }
+    // ) => {
+    //   return await db.users.insert({ name: reviewEmployee },{
+    //     review: [{ author: reviewer, review: feedback }],
+        
+    //   })
+    // },
     removeEmployee: async (
       _root: undefined,
       { name }: { name: string },

@@ -22,6 +22,7 @@ export const typeDefs = gql`
   type Query {
     users: [user!]!
     getAssignedEmployees(name: String!): [employeesProfile]
+    
   }
   
   type Acknowledged {
@@ -32,7 +33,7 @@ export const typeDefs = gql`
     assignEmployeeReview( assignEmployee: String!, employeeNameToReview: String!): Acknowledged
     addEmployee( name: String!, feedback: String!, picture: String): Acknowledged
     removeEmployee( name: String! ): Acknowledged
-    
+   
   }
 
 `

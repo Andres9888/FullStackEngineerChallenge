@@ -12,4 +12,26 @@ export const USERS = gql`
     }
   }
 `
+// export const GET_CURRENT_USER = gql`
+//   query getCurrentuser($currentUser: String!) {
+//     getCurrentuser(currentUser: $currentUser) {
+//       name
+//       image
+//     }
+//   }
+// `
+
+export const GET_ASSIGNED_EMPLOYEE = gql`
+  query getAssignedEmployees($name: String!) {
+    getAssignedEmployees(name: $name) {
+      profileReview {
+        name
+        review {
+          author
+          review
+        }
+      }
+    }
+  }
+`
 

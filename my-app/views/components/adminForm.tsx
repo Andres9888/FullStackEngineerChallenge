@@ -19,7 +19,6 @@ const AdminForm = ({ refetch }) => {
     const response = await fetch('https://randomuser.me/api/?inc=picture')
     const userpicture = await response.json();
 
-    console.log(userpicture.results)
     await addEmployee({
       variables: {
         name: formUserNameInput.user.username,

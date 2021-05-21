@@ -6,28 +6,16 @@ import moment from 'moment'
 import { useSession } from 'next-auth/client'
 
 import { useMutation, useQuery } from '@apollo/react-hooks'
+import { GET_ASSIGNED_EMPLOYEE } from '~graphql/queries/queries'
+import { UserOutlined,InfoCircleOutlined  } from '@ant-design/icons'
 
-const USERS = gql`
-  query getAssignedEmployees($name: String!) {
-    getAssignedEmployees(name: $name) {
-      profileReview {
-        name
-        review {
-          author
-          review
-        }
-      }
-    }
-  }
-`
+//import { GIVE_FEEDBACK } from '~graphql/mutations/mutations'
 
-const INCREMENT_COUNT = gql`
-  mutation addEmployee($name: String!, $feedback: String!) {
-    addEmployee(name: $name, feedback: $feedback) {
-      acknowledged
-    }
-  }
-`
+
+
+
+
+
 const { TextArea } = Input
 
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
@@ -50,10 +38,10 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 
 const EmployeePanel = () => {
   const [session] = useSession()
-  const { data, loading, error, refetch } = useQuery(USERS, {
+  const { data, loading, error, refetch } = useQuery(GET_ASSIGNED_EMPLOYEE, {
     variables: { name: session.user.name }
   })
-  const [incrementCount] = useMutation(INCREMENT_COUNT)
+  //const [giveFeedback] = useMutation(GIVE_FEEDBACK)
 
   const [value, setValue] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -111,11 +99,20 @@ const EmployeePanel = () => {
         }}
         dataSource={data.getAssignedEmployees[0].profileReview}
       />
+       <Input
+      placeholder="Enter your username"
+      prefix={<UserOutlined className="site-form-item-icon" />}
+      suffix={
+        <Tooltip title="Extra information">
+          <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
+        </Tooltip>
+      }
+    />
       <Comment
         avatar={
           <Avatar
-            src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
-            alt='Han Solo'
+            src=''
+            alt=''
           />
         }
         content={

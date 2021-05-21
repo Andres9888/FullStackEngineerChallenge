@@ -1,16 +1,21 @@
-import React from 'react';
+import React from 'react'
 
-import { useSession } from 'next-auth/client';
-import AdminPanel from '~views/components/AdminPanel';
-import EmployeePanel from '~views/components/EmployeePanel';
-import Nav from '~views/components/Nav';
-import { Skeleton } from 'antd'
+import { useSession } from 'next-auth/client'
+import AdminPanel from '~views/components/AdminPanel'
+import EmployeePanel from '~views/components/EmployeePanel'
+import Nav from '~views/components/Nav'
+import { Skeleton , Layout} from 'antd'
 
 export default function Page () {
   const [session, loading] = useSession()
-  
+
   if (loading) {
-    return <><Nav /><Skeleton active /></>
+    return (
+      <>
+        <Nav />
+        <Skeleton active />
+      </>
+    )
   }
 
   return (

@@ -646,6 +646,7 @@ html {
 }
 .app__affix-header {
   z-index: 99;
+  margin-bottom: 23px;
 }
 .app__affix-footer {
   position: absolute;

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Affix, Button, Layout, Menu } from 'antd'
+import { Affix, Button, Layout, Menu, Avatar, Space } from 'antd'
 import { signIn, signOut, useSession } from 'next-auth/client'
 import Link from 'next/link'
 
@@ -12,9 +12,12 @@ const Nav = () => {
   const [session] = useSession()
   const subMenuLogin =
     session && session.user.name ? (
+      <Space>
+        <Avatar />
       <Button onClick={signOut} type='primary'>
         Sign Out
       </Button>
+      </Space>
     ) : (
       <Item key='/login'>
         <Button onClick={signIn} type='primary'>
