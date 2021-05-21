@@ -2,7 +2,7 @@ import React from 'react'
 import { signIn, signOut, useSession } from 'next-auth/client'
 import AdminPanel from '~views/components/AdminPanel'
 import EmployeePanel from '~views/components/EmployeePanel'
-import NavBlank from '~views/components/NavBlank'
+import Nav from '~views/components/Nav'
 
 export default function Page () {
   const [session, loading] = useSession()
@@ -12,19 +12,7 @@ export default function Page () {
 
   return (
     <>
-      {!session && (
-        <>
-          Not signed in <br />
-          <button onClick={signIn}>Sign in</button>
-        </>
-      )}
-      {session && (
-        <>
-          Signed in as {session.user.name} <br />
-          <button onClick={signOut}>Sign out</button>
-        </>
-      )}
-      <NavBlank />
+      <Nav />
       {session && session.user.name === 'admin' && <AdminPanel />}
       {session && session.user.name !== 'admin' && <EmployeePanel />}
     </>

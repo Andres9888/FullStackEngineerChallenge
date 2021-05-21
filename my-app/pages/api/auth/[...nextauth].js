@@ -1,26 +1,10 @@
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
-import axios from 'axios'
-const MongoClient = require('mongodb').MongoClient
-
-const url =
-  'mongodb+srv://andres9888:andresmongo@cluster0.8bama.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-const connectDatabase = async () => {
-  const client = await MongoClient.connect(url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  const db = client.db('paypay-codetest-db')
-
-  return {
-    users: db.collection('paypay-codetest-collection')
-  }
-}
+import { connectDatabase } from '~server/database'
 
 const fetchData = async () => {
   const db = await connectDatabase()
   const users = await db.users.find({}).toArray()
-  console.log(users)
   return users
 }
 let users = fetchData()
@@ -44,8 +28,10 @@ const options = {
       authorize: async credentials => {
         if (await isCorrectCredentials(credentials)) {
           let data = await users
-          const find =  data.find(element => element.name === credentials.username)
-          
+          const find = data.find(
+            element => element.name === credentials.username
+          )
+
           const user = find
 
           // Any object returned will be saved in `user` property of the JWT

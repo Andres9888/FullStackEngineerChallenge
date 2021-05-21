@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { Layout, Avatar, Affix, Input, Button, Icon, Menu } from 'antd'
+import { Layout, Affix, Button, Menu, Space } from 'antd'
 import { signIn, signOut, useSession } from 'next-auth/client'
 
 
@@ -9,14 +9,13 @@ const { Header } = Layout
 
 const { Item, SubMenu } = Menu
 
-const NavBlank = ({  }) =>{
-  const [session, loading] = useSession()
+const Nav = () =>{
+  const [session] = useSession()
   const subMenuLogin =
     session && session.user.name ? (
-      <SubMenu title={<Avatar />}>
-        {session.user.name}
-        <Button onClick={signOut} type="primary">Sign Out</Button>
-      </SubMenu>
+      
+      <Button onClick={signOut} type="primary">Sign Out</Button>
+      
     ) : (
       <Item key="/login">
           <Button onClick={signIn} type="primary">Sign In</Button>
@@ -30,12 +29,13 @@ const NavBlank = ({  }) =>{
         <div className='app-header__logo-search-section'>
           <div className='app-header__logo'>
           <Link href="/">
-              <h1>home</h1>
+          <img src="https://avatars.githubusercontent.com/u/64237612?s=200&v=4" alt="App logo" />
             </Link>
           </div>
         </div>
+        {session && session.user.name ? <h1>Logged in as {session.user.name}</h1> : <div></div>  }
         <div className="app-header__menu-section">
-        <Menu mode="horizontal" selectable={false} className="menu">
+        <Menu mode="vertical" selectable={false} className="menu">
         {subMenuLogin}
     </Menu>
         </div>
@@ -44,5 +44,5 @@ const NavBlank = ({  }) =>{
     
 
 
-export default NavBlank
+export default Nav
 

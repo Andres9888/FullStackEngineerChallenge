@@ -1,20 +1,9 @@
 import React from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
-import {
-  Table,
-  Popconfirm,
-  Comment,
-  Tooltip,
-  Avatar,
-  Menu,
-  Dropdown,
-  Space,
-  Spin
-} from 'antd'
+import { Table, Comment, Tooltip, Avatar } from 'antd'
 import moment from 'moment'
-import { UserOutlined } from '@ant-design/icons'
-import { signIn, signOut, useSession } from 'next-auth/client'
+import { useSession } from 'next-auth/client'
 import 'antd/dist/antd.css'
 
 const USERS = gql`
@@ -41,32 +30,31 @@ const INCREMENT_COUNT = gql`
 
 const EmployeePanel = ({ currentEmployee }) => {
   const [session] = useSession()
- 
+
   const { data, loading, error, refetch } = useQuery(USERS, {
-     variables: { name: session.user.name }
-   })
+    variables: { name: session.user.name }
+  })
   const [incrementCount] = useMutation(INCREMENT_COUNT)
   const columns = [
     { title: 'Employee', dataIndex: 'name', key: 'name' },
     {
       title: 'Action',
       dataIndex: 'name',
-      key: 'x',
+      key: 'x'
     }
   ]
-  
+
   const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
 
   if (loading) {
-     return <h1>Loading...</h1>
+    return <h1>Loading...</h1>
   }
-   if (error) {
-     return (
-     <h1>Error more than likely a database connection issue or network</h1>
+  if (error) {
+    return (
+      <h1>Error more than likely a database connection issue or network</h1>
     )
-   }
+  }
   return (
-    
     <div>
       <Table
         columns={columns}

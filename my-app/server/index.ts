@@ -1,4 +1,3 @@
-//@ts-nocheck
 require('dotenv').config()
 // if you want to use nextRoutes
 //const routes = require('~server/core/nextRoutes')
