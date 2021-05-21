@@ -26,7 +26,7 @@ export const resolvers = {
     getAssignedEmployees: async (
       _root: undefined,
       { name }: { name: string },
-      { db }
+      { db }: { db: Database }
     ) => {
       return await db.users
         .aggregate([
@@ -88,11 +88,12 @@ export const resolvers = {
   Mutation: {
     addEmployee: async (
       _root: undefined,
-      { name, feedback }: { name: string; feedback: string },
+      { name, feedback, picture }: { name: string; feedback: string, picture: string },
       { db }: { db: Database }
     ) => {
       return await db.users.insert({
         name: name,
+        image: picture,
         review: [{ author: 'admin', review: feedback }],
         employeesToReview: []
       })
@@ -107,7 +108,10 @@ export const resolvers = {
 
     assignEmployeeReview: async (
       _root: undefined,
-      { assignEmployee, employeeNameToReview },
+      {
+        assignEmployee,
+        employeeNameToReview
+      }: { assignEmployee: string; employeeNameToReview: string },
       { db }: { db: Database }
     ) => {
       return await db.users.updateOne(

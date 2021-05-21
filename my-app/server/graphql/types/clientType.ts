@@ -6,6 +6,7 @@ export const typeDefs = gql`
     id: ID!
     name: String!
     review: [review!]!
+    image: String
   }
   
   type employeesProfile {
@@ -23,14 +24,14 @@ export const typeDefs = gql`
     getAssignedEmployees(name: String!): [employeesProfile]
   }
   
-  type CountResult {
+  type Acknowledged {
     acknowledged: Boolean
   }
 
   type Mutation {
-    assignEmployeeReview( assignEmployee: String!, employeeNameToReview: String!): CountResult
-    addEmployee( name: String!, feedback: String!): CountResult
-    removeEmployee( name: String! ): CountResult
+    assignEmployeeReview( assignEmployee: String!, employeeNameToReview: String!): Acknowledged
+    addEmployee( name: String!, feedback: String!, picture: String): Acknowledged
+    removeEmployee( name: String! ): Acknowledged
     
   }
 

@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 const { Header } = Layout
 
-const { Item, SubMenu } = Menu
+const { Item } = Menu
 
 const Nav = () => {
   const [session] = useSession()
@@ -37,7 +37,7 @@ const Nav = () => {
           </div>
         </div>
         {session && session.user.name ? (
-          <h1>Logged in as {session.user.name}</h1>
+          <h1>Hello, {session.user.name}</h1>
         ) : (
           <div></div>
         )}

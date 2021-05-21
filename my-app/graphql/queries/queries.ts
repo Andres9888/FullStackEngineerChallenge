@@ -4,6 +4,7 @@ export const USERS = gql`
   query users {
     users {
       name
+      image
       review {
         author
         review

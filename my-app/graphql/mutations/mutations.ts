@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export const ADD_EMPLOYEE = gql`
-  mutation addEmployee($name: String!, $feedback: String!) {
-    addEmployee(name: $name, feedback: $feedback) {
+  mutation addEmployee($name: String!, $feedback: String!, $picture: String) {
+    addEmployee(name: $name, feedback: $feedback, picture: $picture) {
       acknowledged
     }
   }

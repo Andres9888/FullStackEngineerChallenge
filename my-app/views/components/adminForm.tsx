@@ -1,5 +1,3 @@
-import 'antd/dist/antd.css'
-
 import React, { useState } from 'react'
 
 import { Button, Form, Input } from 'antd'
@@ -10,7 +8,7 @@ import { useMutation } from '@apollo/react-hooks'
 type LayoutType = Parameters<typeof Form>[0]['layout']
 
 const AdminForm = ({ refetch }) => {
-  const [incrementCount] = useMutation(ADD_EMPLOYEE)
+  const [addEmployee] = useMutation(ADD_EMPLOYEE)
 
   const [form] = Form.useForm()
   const [formLayout, setFormLayout] = useState<LayoutType>('horizontal')
@@ -18,11 +16,15 @@ const AdminForm = ({ refetch }) => {
   const handleSubmit = async e => {
     let formUserNameInput = form.getFieldsValue(['user', 'username'])
     let formReviewInput = form.getFieldsValue(['userReview', 'review'])
+    const response = await fetch('https://randomuser.me/api/?inc=picture')
+    const userpicture = await response.json();
 
-    await incrementCount({
+    console.log(userpicture.results)
+    await addEmployee({
       variables: {
         name: formUserNameInput.user.username,
-        feedback: formReviewInput.userReview.review
+        feedback: formReviewInput.userReview.review ? formReviewInput.userReview.review : "",
+        picture: userpicture.results[0].picture.thumbnail
       }
     })
     refetch()

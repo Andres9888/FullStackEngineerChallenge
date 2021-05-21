@@ -1,10 +1,9 @@
-import 'antd/dist/antd.css'
+import React, { useState } from 'react'
 
-import { Avatar, Button, Comment, Form, Input, Table, Tooltip } from 'antd'
+import { Avatar, Button, Comment, Form, Input, Table, Tooltip, Skeleton } from 'antd'
 import gql from 'graphql-tag'
 import moment from 'moment'
 import { useSession } from 'next-auth/client'
-import React, { useState } from 'react'
 
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
@@ -72,20 +71,17 @@ const EmployeePanel = () => {
     setValue(e.target.value)
   }
 
- const handleSubmit = () => {
+  const handleSubmit = () => {
     if (!value) {
-      return;
+      return
     }
-    setSubmitting(
-       true
-    );
-
+    setSubmitting(true)
   }
-  
+
   const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
 
   if (loading) {
-    return <h1>Loading...</h1>
+    return <Skeleton active/>
   }
   if (error) {
     return (

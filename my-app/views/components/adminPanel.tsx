@@ -1,6 +1,4 @@
-import 'antd/dist/antd.css';
-
-import React from 'react';
+import React from 'react'
 
 import {
   Avatar,
@@ -14,21 +12,15 @@ import {
   Space,
   Spin,
   Table,
-  Tooltip,
-} from 'antd';
-import moment from 'moment';
-import {
-  ASSIGN_EMPLOYEE,
-  REMOVE_EMPLOYEE,
-} from '~graphql/mutations/mutations';
-import { USERS } from '~graphql/queries/queries';
-import AdminForm from '~views/components/AdminForm';
+  Tooltip
+} from 'antd'
+import moment from 'moment'
+import { ASSIGN_EMPLOYEE, REMOVE_EMPLOYEE } from '~graphql/mutations/mutations'
+import { USERS } from '~graphql/queries/queries'
+import AdminForm from '~views/components/AdminForm'
 
-import { UserOutlined } from '@ant-design/icons';
-import {
-  useMutation,
-  useQuery,
-} from '@apollo/react-hooks';
+import { UserOutlined } from '@ant-design/icons'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 
 const AdminPanel = () => {
   const { data, loading, error, refetch } = useQuery(USERS)
@@ -56,6 +48,9 @@ const AdminPanel = () => {
     }
   }
   const columns = [
+    { title: 'image', dataIndex: 'image', key: 'image', render: (text, record) => (
+      <Avatar src={record.image}/>
+    ) },
     { title: 'Employee', dataIndex: 'name', key: 'name' },
     {
       title: 'Action',
