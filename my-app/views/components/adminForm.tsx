@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
-import { useMutation } from '@apollo/react-hooks'
-
-import { ADD_EMPLOYEE } from '~graphql/mutations/mutations'
-import { Form, Input, Button } from 'antd'
 import 'antd/dist/antd.css'
+
+import React, { useState } from 'react'
+
+import { Button, Form, Input } from 'antd'
+import { ADD_EMPLOYEE } from '~graphql/mutations/mutations'
+
+import { useMutation } from '@apollo/react-hooks'
 
 type LayoutType = Parameters<typeof Form>[0]['layout']
 
@@ -14,11 +16,9 @@ const AdminForm = ({ refetch }) => {
   const [formLayout, setFormLayout] = useState<LayoutType>('horizontal')
 
   const handleSubmit = async e => {
-    
     let formUserNameInput = form.getFieldsValue(['user', 'username'])
     let formReviewInput = form.getFieldsValue(['userReview', 'review'])
-   
-    
+
     await incrementCount({
       variables: {
         name: formUserNameInput.user.username,
@@ -48,34 +48,33 @@ const AdminForm = ({ refetch }) => {
       : null
 
   return (
-      <Form
-        {...formItemLayout}
-        layout={formLayout}
-        form={form}
-        initialValues={{ layout: formLayout }}
-        onValuesChange={onFormLayoutChange}
+    <Form
+      {...formItemLayout}
+      layout={formLayout}
+      form={form}
+      initialValues={{ layout: formLayout }}
+      onValuesChange={onFormLayoutChange}
+    >
+      <Form.Item
+        name={['user', 'username']}
+        rules={[{ required: true, message: 'Please input employee name!' }]}
+        label='Add Employee'
       >
-        <Form.Item
-          name={['user', 'username']}
-          rules={[{ required: true, message: 'Please input employee name!' }]}
-          label='Add Employee'
-        >
-          <Input placeholder='input placeholder' />
-        </Form.Item>
-        <Form.Item
-          name={['userReview', 'review']}
-          rules={[{ required: true, message: 'Please input your review!' }]}
-          label='Add Review'
-        >
-          <Input placeholder='input placeholder' />
-        </Form.Item>
-        <Form.Item {...buttonItemLayout}>
-          <Button onClick={handleSubmit} type='primary'>
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-    
+        <Input placeholder='input placeholder' />
+      </Form.Item>
+      <Form.Item
+        name={['userReview', 'review']}
+        rules={[{ required: true, message: 'Please input your review!' }]}
+        label='Add Review'
+      >
+        <Input placeholder='input placeholder' />
+      </Form.Item>
+      <Form.Item {...buttonItemLayout}>
+        <Button onClick={handleSubmit} type='primary'>
+          Submit
+        </Button>
+      </Form.Item>
+    </Form>
   )
 }
 export default AdminForm

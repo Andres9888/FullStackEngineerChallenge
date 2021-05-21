@@ -1,10 +1,15 @@
-import React from 'react'
-import { useQuery, useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
-import { Table, Comment, Tooltip, Avatar } from 'antd'
-import moment from 'moment'
-import { useSession } from 'next-auth/client'
-import 'antd/dist/antd.css'
+import gql from 'graphql-tag';
+import moment from 'moment';
+import React from 'react';
+import {
+  Avatar,
+  Comment,
+  Table,
+  Tooltip
+  } from 'antd';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useSession } from 'next-auth/client';
+import 'antd/dist/antd.css';
 
 const USERS = gql`
   query getAssignedEmployees($name: String!) {

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Collection, ObjectId } from 'mongodb'
 
 type review = {

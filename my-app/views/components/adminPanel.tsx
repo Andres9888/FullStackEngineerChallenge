@@ -1,24 +1,26 @@
-import React from 'react'
-import { useQuery, useMutation } from '@apollo/react-hooks'
-import { USERS } from '~graphql/queries/queries'
-import { ASSIGN_EMPLOYEE, REMOVE_EMPLOYEE } from '~graphql/mutations/mutations'
-import {
-  Table,
-  Popconfirm,
-  Comment,
-  Tooltip,
-  Avatar,
-  Menu,
-  Dropdown,
-  message,
-  Space,
-  Spin
-} from 'antd'
-import { UserOutlined } from '@ant-design/icons'
-import 'antd/dist/antd.css'
-import AdminForm from '~views/components/AdminForm'
+import "antd/dist/antd.css"
 
-import moment from 'moment'
+import React from "react"
+
+import {
+  Avatar,
+  Comment,
+  Dropdown,
+  Menu,
+  message,
+  Popconfirm,
+  Space,
+  Spin,
+  Table,
+  Tooltip,
+} from "antd"
+import moment from "moment"
+import { ASSIGN_EMPLOYEE, REMOVE_EMPLOYEE } from "~graphql/mutations/mutations"
+import { USERS } from "~graphql/queries/queries"
+import AdminForm from "~views/components/AdminForm"
+
+import { UserOutlined } from "@ant-design/icons"
+import { useMutation, useQuery } from "@apollo/react-hooks"
 
 const AdminPanel = () => {
   const { data, loading, error, refetch } = useQuery(USERS)
@@ -32,10 +34,10 @@ const AdminPanel = () => {
     } else {
       return (
         <Menu onClick={handleButtonClick}>
-          {data.users.map(element => (
+          {data.users.map((element) => (
             <Menu.Item
               onClick={() => handleMenuClick(record.name, element.name)}
-              key='1'
+              key="1"
               icon={<UserOutlined />}
             >
               {element.name}
@@ -46,52 +48,50 @@ const AdminPanel = () => {
     }
   }
   const columns = [
-    { title: 'Employee', dataIndex: 'name', key: 'name' },
+    { title: "Employee", dataIndex: "name", key: "name" },
     {
-      title: 'Action',
-      dataIndex: 'name',
-      key: 'x',
+      title: "Action",
+      dataIndex: "name",
+      key: "x",
       render: (text, record) => (
         <Space wrap>
           <Dropdown.Button
             overlay={menu(record)}
-            placement='bottomCenter'
+            placement="bottomCenter"
             icon={<UserOutlined />}
           >
             Assign To Review
           </Dropdown.Button>
           <Popconfirm
-            title='Are you sure you want to remove this employee?'
+            title="Are you sure you want to remove this employee?"
             onConfirm={() => handleRemove(record.name)}
           >
             <a>Delete</a>
           </Popconfirm>
         </Space>
-      )
-    }
+      ),
+    },
   ]
-  
-  const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
 
-  const handleRemove = async name => {
+  const actions = [<span key="comment-basic-reply-to">Reply to</span>]
+
+  const handleRemove = async (name) => {
     await removeEmployee({ variables: { name: name } })
     refetch()
   }
 
-  function handleButtonClick (e) {
-    message.info('Click on right button.')
+  function handleButtonClick(e) {
+    message.info("Click on right button.")
   }
 
   const handleMenuClick = async (employee, assignedEmployee) => {
     return await assignEmployee({
       variables: {
         assignEmployee: employee,
-        employeeNameToReview: assignedEmployee
-      }
+        employeeNameToReview: assignedEmployee,
+      },
     })
   }
-
-  
 
   if (loading) {
     return <h1>Loading...</h1>
@@ -108,21 +108,21 @@ const AdminPanel = () => {
       <Table
         columns={columns}
         expandable={{
-          expandedRowRender: record =>
-            record.review.map(element => (
+          expandedRowRender: (record) =>
+            record.review.map((element) => (
               <Comment
                 actions={actions}
                 author={<a>{element.author}</a>}
-                avatar={<Avatar src='' alt='' />}
+                avatar={<Avatar src="" alt="" />}
                 content={<p>{element.review}</p>}
                 datetime={
-                  <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
+                  <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
                     <span>{moment().fromNow()}</span>
                   </Tooltip>
                 }
               />
             )),
-          rowExpandable: record => record.name !== 'Not Expandable'
+          rowExpandable: (record) => record.name !== "Not Expandable",
         }}
         dataSource={data.users}
       />
