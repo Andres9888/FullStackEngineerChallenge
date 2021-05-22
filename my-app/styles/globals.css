@@ -15,7 +15,9 @@ a {
 * {
   box-sizing: border-box;
 }
-
+.signIn-name{
+  margin-right:20px;
+}
 .app-header {
   display: flex;
   background: #fff !important;

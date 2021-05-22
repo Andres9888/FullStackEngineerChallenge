@@ -39,7 +39,7 @@ const Nav = () => {
           </div>
         </div>
         {session && session.user.name ? (
-          <h1>Hello, {session.user.name}</h1>
+          <h1 className="signIn-name">Hello, {session.user.name}</h1>
         ) : (
           <div></div>
         )}

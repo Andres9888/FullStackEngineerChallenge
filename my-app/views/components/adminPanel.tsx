@@ -2,10 +2,14 @@ import React from 'react'
 
 import {Avatar, Button, Comment, Dropdown, Menu, message, Popconfirm, Skeleton, Space, Spin, Table, Tooltip} from 'antd'
 import moment from 'moment'
+
+import {removeEmployee as removeEmployeeData, removeEmployeeVariables} from '~graphql/mutations/__generated__/removeEmployee'
 import {assignEmployeeReview as assignEmployeeReviewData, assignEmployeeReviewVariables} from '~graphql/mutations/__generated__/assignEmployeeReview'
+
 import { ASSIGN_EMPLOYEE, REMOVE_EMPLOYEE } from '~graphql/mutations/mutations'
 import { users as usersData } from '~graphql/queries/__generated__/users'
 import { USERS } from '~graphql/queries/queries'
+
 import AdminForm from '~views/components/AdminForm'
 
 import { UserOutlined } from '@ant-design/icons'
@@ -14,7 +18,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks'
 const AdminPanel = () => {
   const { data, loading, error, refetch } = useQuery<usersData>(USERS)
   const [assignEmployee] = useMutation<assignEmployeeReviewData,assignEmployeeReviewVariables>(ASSIGN_EMPLOYEE)
-  const [removeEmployee] = useMutation(REMOVE_EMPLOYEE)
+  const [removeEmployee] = useMutation<removeEmployeeData,removeEmployeeVariables>(REMOVE_EMPLOYEE)
 
   const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
 
@@ -23,7 +27,7 @@ const AdminPanel = () => {
       return <Spin />
     } else {
       return (
-        <Menu onClick={handleButtonClick}>
+        <Menu>
           {data.users.map(element => (
             <Menu.Item
               onClick={() => handleMenuClick(record.name, element.name)}
@@ -55,7 +59,7 @@ const AdminPanel = () => {
             overlay={menu(record)}
             placement='bottomCenter'
             icon={<UserOutlined />}
-          >
+          onClick={handleButtonClick}>
             Assign To Review
           </Dropdown.Button>
           <Popconfirm

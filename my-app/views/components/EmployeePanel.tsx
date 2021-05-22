@@ -5,6 +5,7 @@ import moment from 'moment';
 import { useSession } from 'next-auth/client';
 import { GIVE_FEEDBACK } from '~graphql/mutations/mutations';
 import { GET_ASSIGNED_EMPLOYEE } from '~graphql/queries/queries';
+import { getAssignedEmployees as getAssignedEmployeesData, getAssignedEmployeesVariables } from '~graphql/queries/__generated__/getAssignedEmployees'
 
 import {useMutation,useQuery,} from '@apollo/react-hooks';
 
@@ -39,7 +40,7 @@ const EmployeePanel = () => {
   const [submitting, setSubmitting] = useState(false)
   const [dropdown, setDropdown] = useState('')
 
-  const { data, loading, error, refetch } = useQuery(GET_ASSIGNED_EMPLOYEE, {
+  const { data, loading, error, refetch } = useQuery<getAssignedEmployeesData,getAssignedEmployeesVariables>(GET_ASSIGNED_EMPLOYEE, {
     variables: { name: session.user.name }
   })
   const [giveFeedback] = useMutation(GIVE_FEEDBACK, {
