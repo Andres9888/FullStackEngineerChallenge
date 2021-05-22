@@ -23,13 +23,6 @@ export const resolvers = {
     ): Promise<User> => {
       return await db.users.find({}).toArray();
     },
-    // getCurrentuser: async (
-    //   _root: undefined,
-    //    {name: currentUser}:{name:string},
-    //   { db }: { db: Database }
-    // ): Promise<User> => {
-    //   return await db.users.find({ name: currentUser }).toArray()
-    // },
     getAssignedEmployees: async (
       _root: undefined,
       { name }: { name: string },

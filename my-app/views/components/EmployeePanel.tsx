@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/client';
 import { GIVE_FEEDBACK } from '~graphql/mutations/mutations';
 import { GET_ASSIGNED_EMPLOYEE } from '~graphql/queries/queries';
 import { getAssignedEmployees as getAssignedEmployeesData, getAssignedEmployeesVariables } from '~graphql/queries/__generated__/getAssignedEmployees'
+import {giveFeedbackReview as giveFeedbackReviewData, giveFeedbackVariables} from '~graphql/mutations/__generated__/giveFeedback'
 
 import {useMutation,useQuery,} from '@apollo/react-hooks';
 
@@ -43,7 +44,7 @@ const EmployeePanel = () => {
   const { data, loading, error, refetch } = useQuery<getAssignedEmployeesData,getAssignedEmployeesVariables>(GET_ASSIGNED_EMPLOYEE, {
     variables: { name: session.user.name }
   })
-  const [giveFeedback] = useMutation(GIVE_FEEDBACK, {
+  const [giveFeedback] = useMutation<giveFeedbackReviewData,giveFeedbackReviewVariables>(GIVE_FEEDBACK, {
     variables: {
       reviewEmployee: dropdown,
       reviewer: session.user.name,
