@@ -9,7 +9,8 @@ import {
   Table,
   Tooltip,
   Skeleton,
-  Select
+  Select,
+  Row
 } from 'antd'
 import gql from 'graphql-tag'
 import moment from 'moment'
@@ -94,6 +95,11 @@ const EmployeePanel = () => {
       <h1>Error more than likely a database connection issue or network</h1>
     )
   }
+  if (!data.getAssignedEmployees[0]) {
+    return (
+      <h1>No Performance Reviews</h1>
+    )
+  }
   return (
     <div>
       <Table
@@ -116,7 +122,7 @@ const EmployeePanel = () => {
           rowExpandable: record => record.name !== 'Not Expandable'
         }}
         dataSource={data.getAssignedEmployees[0].profileReview}
-      />
+      /><Row>
       <Select
         showSearch
         style={{ width: '100%' }}
@@ -137,7 +143,7 @@ const EmployeePanel = () => {
         {data.getAssignedEmployees[0].profileReview.map((element, index) => (
           <Option value={element.name}>{element.name}</Option>
         ))}
-      </Select>
+      </Select></Row>
       ,
       <Comment
         avatar={<Avatar src='' alt='' />}

@@ -95,7 +95,11 @@ export const resolvers = {
   Mutation: {
     addEmployee: async (
       _root: undefined,
-      { name, feedback, picture }: { name: string; feedback: string, picture: string },
+      {
+        name,
+        feedback,
+        picture
+      }: { name: string; feedback: string; picture: string },
       { db }: { db: Database }
     ) => {
       return await db.users.insert({
@@ -107,13 +111,17 @@ export const resolvers = {
     },
     giveFeedback: async (
       _root: undefined,
-      { reviewEmployee, feedback, reviewer  } : { reviewEmployee: string, feedback : string, reviewer: string  } ,
-       { db }: { db: Database }
+      {
+        reviewEmployee,
+        feedback,
+        reviewer
+      }: { reviewEmployee: string; feedback: string; reviewer: string },
+      { db }: { db: Database }
     ) => {
-       return await db.users.update({ name: reviewEmployee },
-       {$push :{ review: { author: reviewer, review: feedback }}},
-     )
-       
+      return await db.users.update(
+        { name: reviewEmployee },
+        { $push: { review: { author: reviewer, review: feedback } } }
+      )
     },
     removeEmployee: async (
       _root: undefined,
