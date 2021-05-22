@@ -1,11 +1,17 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
 
 This project uses the following technologies:
+
 Next.js as my React framework for frontend
-Next.js for with nextAuth for authentication and to handle api calls  
+
+nextAuth for authentication and to handle api calls  
+
 MongoDB for the database
+
 Node for the backend
+
 Graphql and Apollo to handle api calls and data management
+
 Typescript for static typing and as language used for whole project
 
 ## Getting Started
@@ -17,10 +23,12 @@ npm run dev
 # or
 yarn dev
 ```
+Node version
+v10.16.0
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Initial you should not be logged in and it will give you the nav bar and a panel with text telling you to log in to view data.
+Initially you should not be logged in and it will give you the nav bar and a panel with text telling you to log in to view data.
 
 When you decide to log in you can do so by clicking the blue sign in button on the top right which will redirect you to the login page.
 
@@ -61,7 +69,7 @@ If you want to give feedback to a certain employee you can do so by selecting an
 
 
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+[API routes] can be accessed on [http://localhost:3000/api/graphql](http://localhost:3000/api/graphql). This endpoint can be viewed in `pages/api/graphql.ts`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+[API auth routes] This endpoint can be viewed in `pages/api/auth/[...nextauth].ts`.
 
