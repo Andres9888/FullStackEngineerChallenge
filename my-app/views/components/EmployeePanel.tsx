@@ -60,6 +60,9 @@ const EmployeePanel = () => {
   
 
   const columns = [
+    { title: 'image', dataIndex: 'image', key: 'image', render: (text, record) => (
+      <Avatar src={record.image}/>
+    ) },
     { title: 'Employee', dataIndex: 'name', key: 'name' },
     {
       title: 'Action',

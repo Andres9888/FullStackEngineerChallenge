@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/client'
 import AdminPanel from '~views/components/AdminPanel'
 import EmployeePanel from '~views/components/EmployeePanel'
 import Nav from '~views/components/Nav'
-import { Skeleton , Layout} from 'antd'
+import { Skeleton } from 'antd'
 
 export default function Page () {
   const [session, loading] = useSession()

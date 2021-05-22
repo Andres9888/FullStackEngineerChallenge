@@ -26,6 +26,7 @@ export const GET_ASSIGNED_EMPLOYEE = gql`
     getAssignedEmployees(name: $name) {
       profileReview {
         name
+        image
         review {
           author
           review

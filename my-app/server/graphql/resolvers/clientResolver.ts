@@ -107,7 +107,7 @@ export const resolvers = {
     },
     giveFeedback: async (
       _root: undefined,
-      { reviewEmployee, feedback, reviewer  },
+      { reviewEmployee, feedback, reviewer  } : { reviewEmployee: string, feedback : string, reviewer: string  } ,
        { db }: { db: Database }
     ) => {
        return await db.users.update({ name: reviewEmployee },
