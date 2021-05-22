@@ -20,6 +20,9 @@ import { USERS } from '~graphql/queries/queries'
 import {
   users as usersData
 } from "~graphql/queries/__generated__/users";
+import {
+  assignEmployeeReview as assignEmployeeReviewData,assignEmployeeReviewVariables
+} from "~graphql/mutations/__generated__/assignEmployeeReview";
 import AdminForm from '~views/components/AdminForm'
 
 import { UserOutlined } from '@ant-design/icons'
@@ -27,7 +30,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks'
 
 const AdminPanel = () => {
   const { data, loading, error, refetch } = useQuery<usersData>(USERS)
-  const [assignEmployee] = useMutation(ASSIGN_EMPLOYEE)
+  const [assignEmployee] = useMutation<assignEmployeeReviewData,assignEmployeeReviewVariables>(ASSIGN_EMPLOYEE)
   const [removeEmployee] = useMutation(REMOVE_EMPLOYEE)
 
   const menu = function (record) {

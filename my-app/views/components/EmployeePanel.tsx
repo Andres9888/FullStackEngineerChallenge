@@ -6,21 +6,17 @@ import {
   Comment,
   Form,
   Input,
-  Table,
-  Tooltip,
-  Skeleton,
   Select,
-  Row
+  Skeleton,
+  Table,
+  Tooltip
 } from 'antd'
-import gql from 'graphql-tag'
 import moment from 'moment'
 import { useSession } from 'next-auth/client'
+import { GIVE_FEEDBACK } from '~graphql/mutations/mutations'
+import { GET_ASSIGNED_EMPLOYEE } from '~graphql/queries/queries'
 
 import { useMutation, useQuery } from '@apollo/react-hooks'
-import { GET_ASSIGNED_EMPLOYEE } from '~graphql/queries/queries'
-import { UserOutlined, InfoCircleOutlined } from '@ant-design/icons'
-
-import { GIVE_FEEDBACK } from '~graphql/mutations/mutations'
 
 const { Option } = Select
 
@@ -51,19 +47,24 @@ const EmployeePanel = () => {
   const [submitting, setSubmitting] = useState(false)
   const [dropdown, setDropdown] = useState('')
 
-
   const { data, loading, error, refetch } = useQuery(GET_ASSIGNED_EMPLOYEE, {
     variables: { name: session.user.name }
   })
-  const [giveFeedback] = useMutation(GIVE_FEEDBACK,{variables: { reviewEmployee: dropdown,reviewer: session.user.name, feedback: value }})
-
-  console.log(data)
-  
+  const [giveFeedback] = useMutation(GIVE_FEEDBACK, {
+    variables: {
+      reviewEmployee: dropdown,
+      reviewer: session.user.name,
+      feedback: value
+    }
+  })
 
   const columns = [
-    { title: 'image', dataIndex: 'image', key: 'image', render: (text, record) => (
-      <Avatar src={record.image}/>
-    ) },
+    {
+      title: 'image',
+      dataIndex: 'image',
+      key: 'image',
+      render: (text, record) => <Avatar src={record.image} />
+    },
     { title: 'Employee', dataIndex: 'name', key: 'name' },
     {
       title: 'Action',
@@ -79,7 +80,7 @@ const EmployeePanel = () => {
     setValue(e.target.value)
   }
 
-  const handleSubmit =  async () => {
+  const handleSubmit = async () => {
     await giveFeedback()
     refetch()
     setSubmitting(true)
@@ -96,9 +97,7 @@ const EmployeePanel = () => {
     )
   }
   if (!data.getAssignedEmployees[0]) {
-    return (
-      <h1>No Performance Reviews</h1>
-    )
+    return <h1>No Performance Reviews</h1>
   }
   return (
     <div>
@@ -122,7 +121,7 @@ const EmployeePanel = () => {
           rowExpandable: record => record.name !== 'Not Expandable'
         }}
         dataSource={data.getAssignedEmployees[0].profileReview}
-      /><Row>
+      />
       <Select
         showSearch
         style={{ width: '100%' }}
@@ -143,7 +142,7 @@ const EmployeePanel = () => {
         {data.getAssignedEmployees[0].profileReview.map((element, index) => (
           <Option value={element.name}>{element.name}</Option>
         ))}
-      </Select></Row>
+      </Select>
       ,
       <Comment
         avatar={<Avatar src='' alt='' />}
