@@ -1,28 +1,11 @@
 import React from 'react'
 
-import {
-  Avatar,
-  Button,
-  Comment,
-  Dropdown,
-  Menu,
-  message,
-  Popconfirm,
-  Skeleton,
-  Space,
-  Spin,
-  Table,
-  Tooltip
-} from 'antd'
+import {Avatar, Button, Comment, Dropdown, Menu, message, Popconfirm, Skeleton, Space, Spin, Table, Tooltip} from 'antd'
 import moment from 'moment'
+import {assignEmployeeReview as assignEmployeeReviewData, assignEmployeeReviewVariables} from '~graphql/mutations/__generated__/assignEmployeeReview'
 import { ASSIGN_EMPLOYEE, REMOVE_EMPLOYEE } from '~graphql/mutations/mutations'
+import { users as usersData } from '~graphql/queries/__generated__/users'
 import { USERS } from '~graphql/queries/queries'
-import {
-  users as usersData
-} from "~graphql/queries/__generated__/users";
-import {
-  assignEmployeeReview as assignEmployeeReviewData,assignEmployeeReviewVariables
-} from "~graphql/mutations/__generated__/assignEmployeeReview";
 import AdminForm from '~views/components/AdminForm'
 
 import { UserOutlined } from '@ant-design/icons'
@@ -32,6 +15,8 @@ const AdminPanel = () => {
   const { data, loading, error, refetch } = useQuery<usersData>(USERS)
   const [assignEmployee] = useMutation<assignEmployeeReviewData,assignEmployeeReviewVariables>(ASSIGN_EMPLOYEE)
   const [removeEmployee] = useMutation(REMOVE_EMPLOYEE)
+
+  const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
 
   const menu = function (record) {
     if (loading) {
@@ -53,9 +38,12 @@ const AdminPanel = () => {
     }
   }
   const columns = [
-    { title: 'image', dataIndex: 'image', key: 'image', render: (text, record) => (
-      <Avatar src={record.image}/>
-    ) },
+    {
+      title: 'image',
+      dataIndex: 'image',
+      key: 'image',
+      render: (_text, record) => <Avatar src={record.image} />
+    },
     { title: 'Employee', dataIndex: 'name', key: 'name' },
     {
       title: 'Action',
@@ -81,15 +69,13 @@ const AdminPanel = () => {
     }
   ]
 
-  const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
-
   const handleRemove = async name => {
-    
-    if(name === "admin"){
+    if (name === 'admin') {
       alert('Can not delete an admin')
-    }else{
-    await removeEmployee({ variables: { name: name } })
-    refetch()}
+    } else {
+      await removeEmployee({ variables: { name: name } })
+      refetch()
+    }
   }
 
   function handleButtonClick (e) {

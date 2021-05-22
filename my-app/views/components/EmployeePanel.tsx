@@ -1,26 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-import {
-  Avatar,
-  Button,
-  Comment,
-  Form,
-  Input,
-  Select,
-  Skeleton,
-  Table,
-  Tooltip
-} from 'antd'
-import moment from 'moment'
-import { useSession } from 'next-auth/client'
-import { GIVE_FEEDBACK } from '~graphql/mutations/mutations'
-import { GET_ASSIGNED_EMPLOYEE } from '~graphql/queries/queries'
+import {Avatar,Button,Comment,Form,Input,Select,Skeleton,Table,Tooltip,} from 'antd';
+import moment from 'moment';
+import { useSession } from 'next-auth/client';
+import { GIVE_FEEDBACK } from '~graphql/mutations/mutations';
+import { GET_ASSIGNED_EMPLOYEE } from '~graphql/queries/queries';
 
-import { useMutation, useQuery } from '@apollo/react-hooks'
+import {useMutation,useQuery,} from '@apollo/react-hooks';
 
 const { Option } = Select
 
 const { TextArea } = Input
+
+const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
 
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
   <>
@@ -82,11 +74,13 @@ const EmployeePanel = () => {
 
   const handleSubmit = async () => {
     await giveFeedback()
-    refetch()
     setSubmitting(true)
+    refetch()
+    setTimeout(() => {
+      setSubmitting(false)
+    }, 1000);
+    
   }
-
-  const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
 
   if (loading) {
     return <Skeleton active />

@@ -1,17 +1,17 @@
-import { Collection, ObjectId } from 'mongodb'
+import { Collection, ObjectId } from "mongodb";
 
 type review = {
-  author: string
-  review: string
-}
+  author: string;
+  review: string;
+};
 interface User {
-  _id: ObjectId
-  name: string
-  review: review[]
+  _id: ObjectId;
+  name: string;
+  review: review[];
 }
 
 interface Database {
-  users: Collection<User>
+  users: Collection<User>;
 }
 
 export const resolvers = {
@@ -21,7 +21,7 @@ export const resolvers = {
       _args: {},
       { db }: { db: Database }
     ): Promise<User> => {
-      return await db.users.find({}).toArray()
+      return await db.users.find({}).toArray();
     },
     // getCurrentuser: async (
     //   _root: undefined,
@@ -44,15 +44,15 @@ export const resolvers = {
           },
           {
             $unwind: {
-              path: '$employeesToReview'
+              path: "$employeesToReview"
             }
           },
           {
             $lookup: {
-              from: 'paypay-codetest-collection',
-              localField: 'employeesToReview',
-              foreignField: 'name',
-              as: 'employeesProfile'
+              from: "paypay-codetest-collection",
+              localField: "employeesToReview",
+              foreignField: "name",
+              as: "employeesProfile"
             }
           },
           {
@@ -68,9 +68,9 @@ export const resolvers = {
           },
           {
             $group: {
-              _id: '$id',
+              _id: "$id",
               profileReview: {
-                $addToSet: '$employeesProfile'
+                $addToSet: "$employeesProfile"
               }
             }
           },
@@ -79,17 +79,17 @@ export const resolvers = {
               _id: 0,
               profileReview: {
                 $reduce: {
-                  input: '$profileReview',
+                  input: "$profileReview",
                   initialValue: [],
                   in: {
-                    $concatArrays: ['$$value', '$$this']
+                    $concatArrays: ["$$value", "$$this"]
                   }
                 }
               }
             }
           }
         ])
-        .toArray()
+        .toArray();
     }
   },
   Mutation: {
@@ -105,9 +105,9 @@ export const resolvers = {
       return await db.users.insert({
         name: name,
         image: picture,
-        review: [{ author: 'admin', review: feedback }],
+        review: [{ author: "admin", review: feedback }],
         employeesToReview: []
-      })
+      });
     },
     giveFeedback: async (
       _root: undefined,
@@ -121,14 +121,14 @@ export const resolvers = {
       return await db.users.update(
         { name: reviewEmployee },
         { $push: { review: { author: reviewer, review: feedback } } }
-      )
+      );
     },
     removeEmployee: async (
       _root: undefined,
       { name }: { name: string },
       { db }: { db: Database }
     ) => {
-      return await db.users.deleteOne({ name: name })
+      return await db.users.deleteOne({ name: name });
     },
 
     assignEmployeeReview: async (
@@ -142,7 +142,7 @@ export const resolvers = {
       return await db.users.updateOne(
         { name: assignEmployee },
         { $addToSet: { employeesToReview: employeeNameToReview } }
-      )
+      );
     }
   }
-}
+};
