@@ -105,16 +105,16 @@ export const resolvers = {
         employeesToReview: []
       })
     },
-    // giveFeedback: async (
-    //   _root: undefined,
-    //   { reviewEmployee, feedback, reviewer  },
-    //   { db }: { db: Database }
-    // ) => {
-    //   return await db.users.insert({ name: reviewEmployee },{
-    //     review: [{ author: reviewer, review: feedback }],
-        
-    //   })
-    // },
+    giveFeedback: async (
+      _root: undefined,
+      { reviewEmployee, feedback, reviewer  },
+       { db }: { db: Database }
+    ) => {
+       return await db.users.update({ name: reviewEmployee },
+       {$push :{ review: { author: reviewer, review: feedback }}},
+     )
+       
+    },
     removeEmployee: async (
       _root: undefined,
       { name }: { name: string },

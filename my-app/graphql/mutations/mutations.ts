@@ -23,10 +23,10 @@ export const REMOVE_EMPLOYEE = gql`
   }
 `
 
-// export const GIVE_FEEDBACK = gql`
-//   mutation giveFeedback($reviewEmployee: String!, $feedback: String!, $reviewer: String) {
-//     giveFeedback(reviewEmployee: $reviewEmployee, feedback: $feedback, reviewer: $reviewer) {
-//       acknowledged
-//     }
-//   }
-// `
+ export const GIVE_FEEDBACK = gql`
+   mutation giveFeedback($reviewEmployee: String!, $feedback: String!, $reviewer: String) {
+     giveFeedback(reviewEmployee: $reviewEmployee, feedback: $feedback, reviewer: $reviewer) {
+       acknowledged
+     }
+   }
+ `

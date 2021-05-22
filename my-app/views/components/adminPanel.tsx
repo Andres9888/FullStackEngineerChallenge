@@ -24,7 +24,6 @@ import { useMutation, useQuery } from '@apollo/react-hooks'
 
 const AdminPanel = () => {
   const { data, loading, error, refetch } = useQuery(USERS)
-  console.log(data)
   const [assignEmployee] = useMutation(ASSIGN_EMPLOYEE)
   const [removeEmployee] = useMutation(REMOVE_EMPLOYEE)
 

@@ -1,20 +1,27 @@
 import React, { useState } from 'react'
 
-import { Avatar, Button, Comment, Form, Input, Table, Tooltip, Skeleton } from 'antd'
+import {
+  Avatar,
+  Button,
+  Comment,
+  Form,
+  Input,
+  Table,
+  Tooltip,
+  Skeleton,
+  Select
+} from 'antd'
 import gql from 'graphql-tag'
 import moment from 'moment'
 import { useSession } from 'next-auth/client'
 
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { GET_ASSIGNED_EMPLOYEE } from '~graphql/queries/queries'
-import { UserOutlined,InfoCircleOutlined  } from '@ant-design/icons'
+import { UserOutlined, InfoCircleOutlined } from '@ant-design/icons'
 
-//import { GIVE_FEEDBACK } from '~graphql/mutations/mutations'
+import { GIVE_FEEDBACK } from '~graphql/mutations/mutations'
 
-
-
-
-
+const { Option } = Select
 
 const { TextArea } = Input
 
@@ -38,13 +45,19 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 
 const EmployeePanel = () => {
   const [session] = useSession()
-  const { data, loading, error, refetch } = useQuery(GET_ASSIGNED_EMPLOYEE, {
-    variables: { name: session.user.name }
-  })
-  //const [giveFeedback] = useMutation(GIVE_FEEDBACK)
 
   const [value, setValue] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [dropdown, setDropdown] = useState('')
+
+
+  const { data, loading, error, refetch } = useQuery(GET_ASSIGNED_EMPLOYEE, {
+    variables: { name: session.user.name }
+  })
+  const [giveFeedback] = useMutation(GIVE_FEEDBACK,{variables: { reviewEmployee: dropdown,reviewer: session.user.name, feedback: value }})
+
+  console.log(data)
+  
 
   const columns = [
     { title: 'Employee', dataIndex: 'name', key: 'name' },
@@ -54,22 +67,24 @@ const EmployeePanel = () => {
       key: 'x'
     }
   ]
+  const handleChangeDropdown = value => {
+    setDropdown(value)
+  }
 
   const handleChange = e => {
     setValue(e.target.value)
   }
 
-  const handleSubmit = () => {
-    if (!value) {
-      return
-    }
+  const handleSubmit =  async () => {
+    await giveFeedback()
+    refetch()
     setSubmitting(true)
   }
 
   const actions = [<span key='comment-basic-reply-to'>Reply to</span>]
 
   if (loading) {
-    return <Skeleton active/>
+    return <Skeleton active />
   }
   if (error) {
     return (
@@ -99,22 +114,30 @@ const EmployeePanel = () => {
         }}
         dataSource={data.getAssignedEmployees[0].profileReview}
       />
-       <Input
-      placeholder="Enter your username"
-      prefix={<UserOutlined className="site-form-item-icon" />}
-      suffix={
-        <Tooltip title="Extra information">
-          <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-        </Tooltip>
-      }
-    />
-      <Comment
-        avatar={
-          <Avatar
-            src=''
-            alt=''
-          />
+      <Select
+        showSearch
+        style={{ width: '100%' }}
+        placeholder='Search to Select'
+        optionFilterProp='children'
+        onChange={value => {
+          handleChangeDropdown(value)
+        }}
+        filterOption={(input, option) =>
+          option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
+        filterSort={(optionA, optionB) =>
+          optionA.children
+            .toLowerCase()
+            .localeCompare(optionB.children.toLowerCase())
+        }
+      >
+        {data.getAssignedEmployees[0].profileReview.map((element, index) => (
+          <Option value={element.name}>{element.name}</Option>
+        ))}
+      </Select>
+      ,
+      <Comment
+        avatar={<Avatar src='' alt='' />}
         content={
           <Editor
             onChange={handleChange}
