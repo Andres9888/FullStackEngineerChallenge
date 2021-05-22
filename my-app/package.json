@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "mon": "nodemon"
+    "mon": "nodemon",
+    "codegen:schema": "npx apollo client:download-schema --endpoint=http://localhost:3000/api/graphql",
+    "codegen:generate": "npx apollo client:codegen --localSchemaFile=schema.json --includes=graphql/**/*.ts --target=typescript"
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",

@@ -17,13 +17,16 @@ import {
 import moment from 'moment'
 import { ASSIGN_EMPLOYEE, REMOVE_EMPLOYEE } from '~graphql/mutations/mutations'
 import { USERS } from '~graphql/queries/queries'
+import {
+  users as usersData
+} from "~graphql/queries/__generated__/users";
 import AdminForm from '~views/components/AdminForm'
 
 import { UserOutlined } from '@ant-design/icons'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
 const AdminPanel = () => {
-  const { data, loading, error, refetch } = useQuery(USERS)
+  const { data, loading, error, refetch } = useQuery<usersData>(USERS)
   const [assignEmployee] = useMutation(ASSIGN_EMPLOYEE)
   const [removeEmployee] = useMutation(REMOVE_EMPLOYEE)
 
